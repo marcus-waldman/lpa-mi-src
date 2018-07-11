@@ -1,3 +1,23 @@
+#'Population parameters for the LPA/FMM model.
+#'
+#' Obtain the population parameters given the data
+#' @param z  (integer) condition identifier (number) for the complete data (as specified by data_conditions)
+#' @param data_conditions  (data.frame) simulation conditions pertaining to the complete data
+#' @return out_list  (list) with the following elements: 
+#'        (A) mu_z - (J-by-K matrix) with the means for the j-th variable in the k-th class.
+#'        (B) S_z -  (J-by-J-by-K array) for the k-th class's covariance matrix
+#'        (C) pi_z - (vector with K elements) marginal probabilties for the k-th class
+#'        (D) K_z - (integer) specifying the number of classes in z-th data condition
+#'        (E) J_Y_z - - (integer) specifying the number of latent class indicators in z-th data condition
+#'        (F) J_Xcom_z - - (integer) specifying the number complete data missing data corrleates in z-th data condition
+#'        (G) J_Xinc_z - - (integer) specifying the number incomplete data missing data correlates in z-th data condition
+#'        (H) J - - (integer) specifying the total number of variables in the joint distribution in z-th data condition
+#'        (I) MD_z - (numeric) specifying the class separation in z-th data condition
+#'        (J) rho_YX_z - - (numeric) specifying the missing data correlates correlation in z-th data condition
+#' @export
+#' @examples
+#' get_FMM_params(z,data_conditions)
+
 get_FMM_params<-function(z,data_conditions){
 
   # Last revised: 12/16/2017

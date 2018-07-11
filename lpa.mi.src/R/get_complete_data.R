@@ -1,22 +1,23 @@
+#' Simulate complete LPA data for simulation study
+#'
+#' This function simulates complete data.
+#' @param z (integer) condition identifier for the complete data (as specified by data_conditions)
+#' @param data_conditions  (data.frame) simulation conditions pertaining to the complete data
+#' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
+#'       (A) rep - (integer) replication number.
+#'       (B) p - (integer) processor number
+#'       (C) temp_wd_p - character. processor-specific temporary directory  
+#' @return out_list  (list) with the following elements
+#'       (A) dfcom - (data.frame) complete data corresponding to the z-th condition number
+#'       (B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
+#'       (C) S - (J-by-J-by-K array) for the k-th class's covariance matrix
+#'       (D) pi - (vector) with K elements. marginal probabilties for the k-th class 
+#'       (E) dffolderfiles (data.frame) with the files and folders of the saved data 
+#' @export
+#' @examples
+#' get_complete_data(z,data_conditions,save_it = FALSE)
+
 get_complete_data<-function(z,data_conditions,save_it = FALSE, rep = NULL, p = NULL, temp_wd_p = NULL){
-  
-  # Last revised: 12/16/2017
-  #
-  # Inputs: 
-  #     z - (integer) condition identifier (number) for the complete data (as specified by data_conditions)
-  #     data_conditions - (data.frame) simulation conditions pertaining to the complete data
-  #     save_it (logical) - if TRUE, then it saves the data set and the following also must be specificed
-  #       A) rep - (integer) replication number.
-  #       B) p - (integer) processor number
-  #       C) temp_wd_p - (character) processor-specific temporary directory  
-  # Output:
-  #     out_list - (list) with the following elements
-  #       A) dfcom - (data.frame) complete data corresponding to the z-th condition number
-  #       B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
-  #       C) S (J-by-J-by-K array) for the k-th class's covariance matrix
-  #       D) pi (vector with K elements) marginal probabilties for the k-th class 
-  #       E) dffolderfiles (data.frame) with the files and folders of the saved data 
-  
   
 #Stuff for error diagnosing:
 #rep = 1
