@@ -2,21 +2,24 @@ Package: lpa.mi.src
 Title: Source functions simulation studies involving for multiple imputation methods in Latent Profile Analysis.
 Version: 0.0.1
 Authors: Marcus Waldman <marcus_waldman@gse.harvard.edu>
-Description: What the package does (one paragraph).
+Description: The package contains a collection of functions to implement a simulation study looking at muliple imputation methods for Latent Profile Analsys.
 Depends: R (>= 3.0.1)
 Imports:
     abind (>= 1.4-5),
     Amelia (>= 1.7.5),
     designmatch (>= 0.3.0),
     ggplot2 (>= 2.2.1),
+    lavaan (>= 0.6-1),
     MASS (>= 7.3-49),
     mice (>= 2.46.0),
     miceadds (>= 2.10-14),
     mixtools (>= 1.1.0),
     MplusAutomation (>= 0.7-2),
     plyr (>= 1.8.4),
+    psych (>1.8.4),
     randomForest (>= 4.6-14),
     reshape(>= 0.8.7),
+    stats (>= 3.5.0), 
     tidyverse (>= 1.2.1)
 License: What license is it under?
 Encoding: UTF-8

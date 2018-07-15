@@ -20,11 +20,11 @@
 get_complete_data<-function(z,data_conditions,save_it = FALSE, rep = NULL, p = NULL, temp_wd_p = NULL){
   
 #Stuff for error diagnosing:
-#rep = 1
-#z = 1
-#save_it = TRUE
-#p = 1
-#temp_wd_p =temp_wd_p_vec[p]
+rep = 1
+z = 1
+save_it = TRUE
+p = 1
+temp_wd_p =temp_wd_p_vec[p]
  
       require(MASS)
       require(MplusAutomation)
