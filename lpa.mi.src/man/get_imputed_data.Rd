@@ -6,7 +6,7 @@
 \usage{
 get_imputed_data(z, list_get_obs, list_get_complete, methods_list,
   data_conditions, pctmiss_vec, rep = NA, p = NA, save_it = FALSE,
-  temp_wd_p = NULL, ...)
+  temp_wd_p_vec = NULL, ...)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}

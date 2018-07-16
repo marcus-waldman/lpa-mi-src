@@ -14,7 +14,6 @@ stratamelia<-function(x,strata,m,...){
 
   require(Amelia)
 
-  strata_vec = sort(unique(strata))
   
   imparray = array(NA, dim = c(nrow(x), ncol(x), m))
   
@@ -27,11 +26,11 @@ stratamelia<-function(x,strata,m,...){
     imparray[inds_k,,] = array(unlist(obj_k$imputation), dim = c(nrow(x_k), ncol(x_k), m))
   }
   longimp_df = data.frame(x)
-  longimp_df = transform(longimp_df, .imp = 0)
+  longimp_df = transform(longimp_df, strata = strata, .imp = 0)
   for (mm in 1:m){
     tmp_df = data.frame(imparray[,,mm])
     names(tmp_df) = names(x)
-    tmp_df = transform(tmp_df, .imp = mm)
+    tmp_df = transform(tmp_df, strata = strata, .imp = mm)
     longimp_df = rbind(longimp_df, tmp_df)
   }
   mids_obj = as.mids(longimp_df)

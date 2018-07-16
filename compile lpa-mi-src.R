@@ -16,5 +16,5 @@ document()
 setwd(src_dir)
 install("lpa.mi.src")
 
-install_github("marcus-waldman/lpa-mi-src/lpa.mi.src")
-library("lpa.mi.src")
+# install_github("marcus-waldman/lpa-mi-src/lpa.mi.src")
+# library("lpa.mi.src")
