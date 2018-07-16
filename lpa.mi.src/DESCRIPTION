@@ -13,7 +13,7 @@ Imports:
     MASS (>= 7.3-49),
     mice (>= 2.46.0),
     miceadds (>= 2.10-14),
-    mixtools (>= 1.1.0),
+    mixtools (>= 2.3),
     MplusAutomation (>= 0.7-2),
     plyr (>= 1.8.4),
     psych (>= 1.8.4),

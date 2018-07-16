@@ -2,11 +2,11 @@
 #'
 #' This function simulates complete data.
 #' @param z (integer) condition identifier for the complete data (as specified by data_conditions)
-#' @param data_conditions  (data.frame) simulation conditions pertaining to the complete data
+#' @param data_conditions (data.frame) simulation conditions pertaining to the complete data
+#' @param rep (integer) Replication number (defaults to 1).
+#' @param p (integer) Processor number (defaults to 1).
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
-#'       (A) rep - (integer) replication number.
-#'       (B) p - (integer) processor number
-#'       (C) temp_wd_p - character. processor-specific temporary directory  
+#'       (A) temp_wd_p - character. processor-specific temporary directory  
 #' @return out_list  (list) with the following elements
 #'       (A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 #'       (B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
@@ -17,19 +17,19 @@
 #' @examples
 #' get_complete_data(z,data_conditions,save_it = FALSE)
 
-get_complete_data<-function(z,data_conditions,save_it = FALSE, rep = NULL, p = NULL, temp_wd_p = NULL){
+get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE, temp_wd_p = NULL){
   
 #Stuff for error diagnosing:
-rep = 1
-z = 1
-save_it = TRUE
-p = 1
-temp_wd_p =temp_wd_p_vec[p]
+# rep = 1
+# z = 1
+# save_it = TRUE
+# p = 1
+#temp_wd_p =temp_wd_p_vec[p]
  
       require(MASS)
-      require(MplusAutomation)
-      if(save_it == TRUE & (is.null(rep) | is.null(temp_wd_p) | is.null(p))){
-        stop("rep, p, & temp_wd_p arguments cannot be NULL with save_it = TRUE")
+      if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
+        require(MplusAutomation)
+        stop("rep, p, & temp_wd_p arguments cannot be NA or NULL with save_it = TRUE")
       }  
       
       # Get population-level parameters for the mixture model 
@@ -73,12 +73,11 @@ temp_wd_p =temp_wd_p_vec[p]
         dfcom_z[inds_k,1:J] = temp
       }
       dfcom_z = transform(dfcom_z, rep = rep, data_condition = z)
-      
+
       # Create the out_list for return and save, if needed
       out_list = list(dfcom = dfcom_z, mu = mu_z, S = S_z, pi = pi_z, dffolderfiles = NULL)
       
       if (save_it == TRUE){
-        
           out_list$dffolderfiles = data.frame(folders = "Complete data", 
                                      files = paste("dfcom p", p," z",z," rep",rep, ".dat",sep = ""), 
                                      data_condition = z)

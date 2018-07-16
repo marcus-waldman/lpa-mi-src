@@ -4,7 +4,7 @@
 \alias{stratamelia}
 \title{Stratified Amelia Imputation}
 \usage{
-stratamelia(x, strata, m = 100, ...)
+stratamelia(x, strata, m, ...)
 }
 \arguments{
 \item{x}{(data.frame) Incomplete data set}
@@ -20,5 +20,5 @@ out_list (list) with each element being an imputed data set.
 This function obtain imputations using Amelia, stratified by observed group membership
 }
 \examples{
-stratamelia(x, strata, m = 50)
+stratamelia(x, strata, m = 1)
 }

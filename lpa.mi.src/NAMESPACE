@@ -2,6 +2,7 @@
 
 export(get_FMM_params)
 export(get_complete_data)
+export(get_imputed_data)
 export(get_mu_all)
 export(get_obs_data)
 export(stratamelia)

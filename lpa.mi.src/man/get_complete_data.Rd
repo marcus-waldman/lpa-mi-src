@@ -4,18 +4,20 @@
 \alias{get_complete_data}
 \title{Simulate complete LPA data for simulation study}
 \usage{
-get_complete_data(z, data_conditions, save_it = FALSE, rep = NULL,
-  p = NULL, temp_wd_p = NULL)
+get_complete_data(z, data_conditions, rep = NA, p = NA, save_it = FALSE,
+  temp_wd_p = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}
 
 \item{data_conditions}{(data.frame) simulation conditions pertaining to the complete data}
 
+\item{rep}{(integer) Replication number (defaults to 1).}
+
+\item{p}{(integer) Processor number (defaults to 1).}
+
 \item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed
-(A) rep - (integer) replication number.
-(B) p - (integer) processor number
-(C) temp_wd_p - character. processor-specific temporary directory}
+(A) temp_wd_p - character. processor-specific temporary directory}
 }
 \value{
 out_list  (list) with the following elements

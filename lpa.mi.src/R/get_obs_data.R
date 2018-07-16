@@ -2,13 +2,13 @@
 #'
 #' This function accepts complete data and applies the missing data mechanism. 
 #' @param z  (integer) condition identifier (number) for the complete data (as specified by data_conditions)
-#' @param df  (data.frame) "complete data" from get_complete_data.R function
+#' @param df  (data.frame) "complete data" from get_complete_data() function
 #' @param pctmiss_vec  (vector) percent missing simulation conditions
 #' @param data_conditions  (data.frame) simulation conditions pertaining to the complete data
-#' @param save_it (logical)  if TRUE, then it saves the data set and the following also must be specificed
-#'       (A) rep  (integer) replication number.
-#'       (B) p  (integer) processor number
-#'       (C) temp_wd_p (character) processor-specific temporary directory  
+#' @param rep (integer) Replication number (defaults to 1).
+#' @param p (integer) Processor number (defaults to 1).
+#' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
+#'       (A) temp_wd_p - character. processor-specific temporary directory  
 #' @return out_list  (list) with the following elements: 
 #'       (A) list_obsdf_z  (list) with length(pctmiss_vec) elements, each corresponding to a 
 #'                          (data.frame) of the observed with %missing values for the z-th condition number
@@ -17,8 +17,8 @@
 #' @examples
 #' get_obs_data(z,df,data_conditions, save_it = FALSE)
 
-get_obs_data<-function(z, df,pctmiss_vec,data_conditions, 
-                       save_it = FALSE, rep = NULL, p = NULL, temp_wd_p = NULL){
+get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
+                       save_it = FALSE, temp_wd_p = NULL){
   
   # Last revised: 01/29/2018
   #
@@ -37,13 +37,13 @@ get_obs_data<-function(z, df,pctmiss_vec,data_conditions,
   #                          (data.frame) of the observed with %missing values for the z-th condition number
   #       B) dffolderfiles (data.frame) with the files and folders of the saved data 
   
-  require(MplusAutomation)
-  if(save_it == TRUE & (is.null(rep) | is.null(temp_wd_p) | is.null(p))){
-    stop("rep, p, & temp_wd_p arguments cannot be NULL with save_it = TRUE")
+  if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
+    require(MplusAutomation)
+    stop("rep, p, & temp_wd_p arguments cannot be NA or NULL with save_it = TRUE")
   }  
   
 # Error diagnostic stuff
-df = list_get_complete$dfcom
+#df = list_get_complete$dfcom
   
   # Pre-processing: Extract information and variables from data_conditions 
   J_Y_z = data_conditions$J_Y[z]

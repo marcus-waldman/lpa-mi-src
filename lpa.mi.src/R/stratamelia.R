@@ -7,30 +7,35 @@
 #' @return out_list (list) with each element being an imputed data set.
 #' @export
 #' @examples
-#' stratamelia(x, strata, m = 50)
+#' stratamelia(x, strata, m = 1)
 
 
-stratamelia<-function(x,strata,m = 100,...){
+stratamelia<-function(x,strata,m,...){
 
   require(Amelia)
 
   strata_vec = sort(unique(strata))
   
-  out_list = rep(list(mat.or.vec(nr = nrow(x), nc = ncol(x))+NA),m)
+  imparray = array(NA, dim = c(nrow(x), ncol(x), m))
   
-  
-  for (k in strata_vec){
+  for (k in unique(strata)){
     inds_k = which(strata == k)
-    obj_amelia = do.call(amelia, args = list(x = x, m = m, ...))
-    #head(obj_amelia$m)
-    
-    for (mm in seq(1,m)){
-      out_list[[mm]][inds_k, ] = obj_amelia$imputations[[mm]]
-    }
-    
+    x_k = x[inds_k, ]
+    args_k = list(x = x_k, m = m, ...)
+#args_k = list(x = x_k, m = m)
+    obj_k = do.call("amelia", args_k)
+    imparray[inds_k,,] = array(unlist(obj_k$imputation), dim = c(nrow(x_k), ncol(x_k), m))
   }
+  longimp_df = data.frame(x)
+  longimp_df = transform(longimp_df, .imp = 0)
+  for (mm in 1:m){
+    tmp_df = data.frame(imparray[,,mm])
+    names(tmp_df) = names(x)
+    tmp_df = transform(tmp_df, .imp = mm)
+    longimp_df = rbind(longimp_df, tmp_df)
+  }
+  mids_obj = as.mids(longimp_df)
   
-  return(out_list)
-  
-  
+  return(mids_obj)
+
 }

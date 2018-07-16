@@ -4,22 +4,24 @@
 \alias{get_obs_data}
 \title{Apply missing data mechanism to simulate observed LPA indicator data}
 \usage{
-get_obs_data(z, df, pctmiss_vec, data_conditions, save_it = FALSE,
-  rep = NULL, p = NULL, temp_wd_p = NULL)
+get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA, p = NA,
+  save_it = FALSE, temp_wd_p = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier (number) for the complete data (as specified by data_conditions)}
 
-\item{df}{(data.frame) "complete data" from get_complete_data.R function}
+\item{df}{(data.frame) "complete data" from get_complete_data() function}
 
 \item{pctmiss_vec}{(vector) percent missing simulation conditions}
 
 \item{data_conditions}{(data.frame) simulation conditions pertaining to the complete data}
 
-\item{save_it}{(logical)  if TRUE, then it saves the data set and the following also must be specificed
-(A) rep  (integer) replication number.
-(B) p  (integer) processor number
-(C) temp_wd_p (character) processor-specific temporary directory}
+\item{rep}{(integer) Replication number (defaults to 1).}
+
+\item{p}{(integer) Processor number (defaults to 1).}
+
+\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed
+(A) temp_wd_p - character. processor-specific temporary directory}
 }
 \value{
 out_list  (list) with the following elements: 
