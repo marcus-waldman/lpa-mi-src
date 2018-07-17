@@ -21,7 +21,7 @@
 #' @param rep (integer) Replication number (defaults to 1).
 #' @param p (integer) Processor number (defaults to 1).
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
-#'       (A) temp_wd_p - character. processor-specific temporary directory  
+#' @param temp_wd_p_vec (character vector). Required if save_it==TRUE.  processor-specific temporary directory
 #' @param ... Additional arguments to the imputation function
 #' @return  out_list - (list) with the following elements
 #'       (A) obj_call - (mids) mids object for imputed data for the
@@ -74,7 +74,7 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
           
           # Get the needed arguments for the imputation procedure
           what_tmp = methods_list$procedure[[pva]]
-          args_tmp = methods_list$args[[pva]]; 
+          args_tmp = methods_list$args[[pva]]
           if (what_tmp == "mice"){
             args_tmp$data = obsdf
             args_tmp$data.init = list_get_complete$dfcom[,1:J]
@@ -109,7 +109,9 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
             
             
             # Save a  ".dat" file of the imputed data set for Mplus
-            prepareMplusData(mice::complete(obj_call, "all"), keepCols = 1:J,
+            
+            colMax = ifelse(what_tmp=="stratamelia",J+1,J)
+            prepareMplusData(mice::complete(obj_call, "all"), keepCols = 1:colMax,
                              filename = paste(temp_wd_p,"/Imputed data/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""), inpfile = FALSE, 
                              overwrite = TRUE, imputed = TRUE)
           }

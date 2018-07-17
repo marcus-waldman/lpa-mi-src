@@ -27,8 +27,9 @@ A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 
 \item{p}{(integer) Processor number (defaults to 1).}
 
-\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed
-(A) temp_wd_p - character. processor-specific temporary directory}
+\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
+
+\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
 
 \item{...}{Additional arguments to the imputation function}
 

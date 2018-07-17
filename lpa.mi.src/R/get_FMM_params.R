@@ -78,7 +78,7 @@ get_FMM_params<-function(z,data_conditions){
       mu_Y_z = MD_z*mu_all[,round(seq(1,ncol(mu_all), len = K_z),0)]
       
       # Mean vecotrs of the covariates
-      mu_X_z = mat.or.vec(nr = J_Xcom_vec + J_Xinc_vec, nc = K_z)
+      mu_X_z = mat.or.vec(nr = J_Xcom_z + J_Xinc_z, nc = K_z)
       
       #Combine the covariate and indicator column vectors
       mu_z = rbind(mu_Y_z, mu_X_z)
