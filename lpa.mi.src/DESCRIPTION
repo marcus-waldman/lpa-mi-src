@@ -8,6 +8,8 @@ Imports:
     abind (>= 1.4-5),
     Amelia (>= 1.7.5),
     designmatch (>= 0.3.0),
+    doParallel (>= 1.0.11),
+    foreach (>= 1.4.4),
     ggplot2 (>= 2.2.1),
     lavaan (>= 0.6-1),
     MASS (>= 7.3-49),
