@@ -1,5 +1,5 @@
 Package: lpa.mi.src
-Title: Source functions simulation studies involving for multiple imputation methods in Latent Profile Analysis.
+Title: Functions for multiple imputation in Latent Profile Analysis simulations.
 Version: 0.0.1
 Authors: Marcus Waldman <marcus_waldman@gse.harvard.edu>
 Description: The package contains a collection of functions to implement a simulation study looking at muliple imputation methods for Latent Profile Analsys.
@@ -8,7 +8,8 @@ Imports:
     abind (>= 1.4-5),
     Amelia (>= 1.7.5),
     designmatch (>= 0.3.0),
-    doSNOW (>= 1.0.16),
+    doParallel (>= 1.0.11),
+    doRNG (>= 1.7.1),
     foreach (>= 1.4.4),
     ggplot2 (>= 2.2.1),
     lavaan (>= 0.6-1),
