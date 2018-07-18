@@ -8,11 +8,12 @@ Imports:
     abind (>= 1.4-5),
     Amelia (>= 1.7.5),
     designmatch (>= 0.3.0),
-    doParallel (>= 1.0.11),
+    doSNOW (>= 1.0.16),
     foreach (>= 1.4.4),
     ggplot2 (>= 2.2.1),
     lavaan (>= 0.6-1),
     MASS (>= 7.3-49),
+    mclust (>= 5.4.1),
     mice (>= 2.46.0),
     miceadds (>= 2.10-14),
     mitools (>= 2.3), 
@@ -23,6 +24,7 @@ Imports:
     randomForest (>= 4.6-14),
     reshape(>= 0.8.7),
     semTools (>= 0.5-0),
+    simsalapar (>= 1.0-10),
     stats (>= 3.5.0), 
     tidyverse (>= 1.2.1)
 License: What license is it under?
