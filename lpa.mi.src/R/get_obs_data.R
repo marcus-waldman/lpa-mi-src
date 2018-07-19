@@ -8,7 +8,7 @@
 #' @param rep (integer) Replication number (defaults to 1).
 #' @param p (integer) Processor number (defaults to 1).
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
-#'       (A) temp_wd_p - character. processor-specific temporary directory  
+#' @param temp_wd_p_vec (character vector). Required if save_it==TRUE.  processor-specific temporary directory
 #' @return out_list  (list) with the following elements: 
 #'       (A) list_obsdf_z  (list) with length(pctmiss_vec) elements, each corresponding to a 
 #'                          (data.frame) of the observed with %missing values for the z-th condition number
@@ -18,7 +18,7 @@
 #' get_obs_data(z,df,data_conditions, save_it = FALSE)
 
 get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
-                       save_it = FALSE, temp_wd_p = NULL){
+                       save_it = FALSE, temp_wd_p_vec = NULL){
   
   # Last revised: 01/29/2018
   #
@@ -36,6 +36,8 @@ get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
   #       A)  list_obsdf_z - (list) with length(pctmiss_vec) elements, each corresponding to a 
   #                          (data.frame) of the observed with %missing values for the z-th condition number
   #       B) dffolderfiles (data.frame) with the files and folders of the saved data 
+  
+  temp_wd_p =temp_wd_p_vec[p]
   
   if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
     require(MplusAutomation)

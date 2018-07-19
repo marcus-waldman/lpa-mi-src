@@ -16,8 +16,9 @@ get_complete_data(z, data_conditions, rep = NA, p = NA, save_it = FALSE,
 
 \item{p}{(integer) Processor number (defaults to 1).}
 
-\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed
-(A) temp_wd_p - character. processor-specific temporary directory}
+\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
+
+\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
 }
 \value{
 out_list  (list) with the following elements

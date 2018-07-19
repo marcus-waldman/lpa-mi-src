@@ -5,7 +5,7 @@
 \title{Apply missing data mechanism to simulate observed LPA indicator data}
 \usage{
 get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA, p = NA,
-  save_it = FALSE, temp_wd_p = NULL)
+  save_it = FALSE, temp_wd_p_vec = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier (number) for the complete data (as specified by data_conditions)}
@@ -20,8 +20,9 @@ get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA, p = NA,
 
 \item{p}{(integer) Processor number (defaults to 1).}
 
-\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed
-(A) temp_wd_p - character. processor-specific temporary directory}
+\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
+
+\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
 }
 \value{
 out_list  (list) with the following elements: 

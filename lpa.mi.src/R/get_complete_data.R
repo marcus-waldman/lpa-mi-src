@@ -6,7 +6,7 @@
 #' @param rep (integer) Replication number (defaults to 1).
 #' @param p (integer) Processor number (defaults to 1).
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
-#'       (A) temp_wd_p - character. processor-specific temporary directory  
+#' @param temp_wd_p_vec (character vector). Required if save_it==TRUE.  processor-specific temporary directory
 #' @return out_list  (list) with the following elements
 #'       (A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 #'       (B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
@@ -24,8 +24,10 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
 # z = 1
 # save_it = TRUE
 # p = 1
-#temp_wd_p =temp_wd_p_vec[p]
- 
+
+  
+      temp_wd_p =temp_wd_p_vec[p]
+
       require(MASS)
       if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
         require(MplusAutomation)
