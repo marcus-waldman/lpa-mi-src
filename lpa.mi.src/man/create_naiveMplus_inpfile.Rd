@@ -4,15 +4,20 @@
 \alias{create_naiveMplus_inpfile}
 \title{Stratified Amelia Imputation}
 \usage{
-create_naiveMplus_inpfile(out_get_FMM, dffolderfiles, temp_wd_p_vec,
-  type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*")
+create_naiveMplus_inpfile(z, out_get_FMM, dffolderfiles, temp_wd_p,
+  savedata = FALSE, type_imputation = FALSE, starts_txt = "0;",
+  symbol_txt = "*")
 }
 \arguments{
+\item{z}{(integer) Condition number}
+
 \item{out_get_FMM}{(list) Gaussian finite mixture model parameters in format exported by get_FMM_params}
 
 \item{dffolderfiles}{(data.frame) with the files and folders of the saved data}
 
-\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
+\item{temp_wd_p}{(character). Specifies processor-specific temporary directory}
+
+\item{savedata}{(logical) Save the cprobs and estiamtes (savedata = TRUE) or not (savedata = FALSE). Defaults to false.}
 
 \item{type_imputation}{(logical) Add a "TYPE = IMPUTATION;" command in the Data command of Mplus. Defaults to FALSE (i.e. not TYPE statement in DATA command)}
 
@@ -27,5 +32,5 @@ Saves the Mplus input files for Naive LPA analysis in the the folders specified 
 This function obtain imputations using Amelia, stratified by observed group membership
 }
 \examples{
-create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p_vec)
+create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p)
 }

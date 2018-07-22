@@ -39,6 +39,9 @@ get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
   
   temp_wd_p =temp_wd_p_vec[p]
   
+  if (save_it==TRUE){require(MplusAutomation)}
+  
+  
   if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
     require(MplusAutomation)
     stop("rep, p, & temp_wd_p arguments cannot be NA or NULL with save_it = TRUE")
@@ -116,7 +119,7 @@ get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
       out_list$dffolderfiles = rbind(out_list$dffolderfiles, 
                                      data.frame(folders = "Observed data", 
                                                 files = paste("obsdf p", p," z",z," rep",rep, " pm", pm,".dat",sep = ""), 
-                                                data_condition = z) )
+                                                data_condition = z, m = NA) )
       
       # Save a copy in RData format
       save(obsdf_z,

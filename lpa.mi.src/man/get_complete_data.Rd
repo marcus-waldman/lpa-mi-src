@@ -5,7 +5,7 @@
 \title{Simulate complete LPA data for simulation study}
 \usage{
 get_complete_data(z, data_conditions, rep = NA, p = NA, save_it = FALSE,
-  temp_wd_p = NULL)
+  temp_wd_p_vec = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}

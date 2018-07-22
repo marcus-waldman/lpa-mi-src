@@ -17,7 +17,7 @@
 #' @examples
 #' get_complete_data(z,data_conditions,save_it = FALSE)
 
-get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE, temp_wd_p = NULL){
+get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE, temp_wd_p_vec = NULL){
   
 #Stuff for error diagnosing:
 # rep = 1
@@ -29,8 +29,9 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
       temp_wd_p =temp_wd_p_vec[p]
 
       require(MASS)
+
+      if (save_it == TRUE){require(MplusAutomation)}      
       if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
-        require(MplusAutomation)
         stop("rep, p, & temp_wd_p arguments cannot be NA or NULL with save_it = TRUE")
       }  
       
@@ -82,7 +83,7 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
       if (save_it == TRUE){
           out_list$dffolderfiles = data.frame(folders = "Complete data", 
                                      files = paste("dfcom p", p," z",z," rep",rep, ".dat",sep = ""), 
-                                     data_condition = z)
+                                     data_condition = z, m = NA)
           
           save(dfcom_z,
                file = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".RData",sep = ""))

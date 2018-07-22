@@ -49,6 +49,9 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
 
   temp_wd_p = temp_wd_p_vec[p];
   
+  if (save_it==TRUE){require(MplusAutomation)}
+  
+  
     if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
       stop("rep, p, & temp_wd_p arguments cannot be NULL with save_it = TRUE")
     }  
@@ -62,8 +65,8 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
     out_list = list(obj_call=NULL,implist = NULL, dffolderfiles = NULL)
 
         
-#pm = 1
-#pva = 2
+# pm = 1
+# pva = 1
 
 
     # Loop over A) pm =  1:length(pctmiss_vec), 2) pva = 1:Nprocedures (pva sounds for plausible values algorithsm)
@@ -100,9 +103,7 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
             out_list$dffolderfiles = rbind(out_list$dffolderfiles, 
                                            data.frame(folders = "Imputed data", 
                                                 files = paste("impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""), 
-                                                data_condition = z) )
-            
-            
+                                                data_condition = z, m = NA) )
             # Save a copy of the obj_call
             save(obj_call,
                  file = paste(temp_wd_p,"/Imputed data/mids p", p," z",z," rep",rep, " pm", pm, " pva", pva,".RData",sep = ""))
@@ -111,9 +112,18 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
             # Save a  ".dat" file of the imputed data set for Mplus
             
             colMax = ifelse(what_tmp=="stratamelia",J+1,J)
-            prepareMplusData(mice::complete(obj_call, "all"), keepCols = 1:colMax,
+            list_mice = mice::complete(obj_call, "all")
+            prepareMplusData(list_mice, keepCols = 1:colMax,
                              filename = paste(temp_wd_p,"/Imputed data/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""), inpfile = FALSE, 
                              overwrite = TRUE, imputed = TRUE)
+
+            dat_ms = read.delim(paste(temp_wd_p,"/Imputed data/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""), header = FALSE)
+            for (m in 1:nrow(dat_ms)){
+              out_list$dffolderfiles = rbind(out_list$dffolderfiles, 
+                                             data.frame(folders = "Imputed data", 
+                                                        files = paste("impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,"_imp_",m,".dat",sep = ""), 
+                                                        data_condition = z, m = m) )
+            }
           }
     
       } # END pva = 1,...
