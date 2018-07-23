@@ -18,15 +18,18 @@ results_pool<-function(p, temp_wd_p_vec, kk, z, rep, starts_txt){
     ### Recored complete data results ####
     
     
-    out_complete<-readModels(target = paste0(temp_wd_p_vec[p],"/Complete data") , 
-                             what = c("warn_err","summaries"))
+    out_complete<-invisible(readModels(target = paste0(temp_wd_p_vec[p],"/Complete data") , 
+                             what = c("warn_err","summaries")))
     files_complete = list.files(paste0(temp_wd_p_vec[p],"/Complete data"), pattern = ".out")
     
     # Get conditioning number
     hi = readLines(con = paste(temp_wd_p_vec[p],"/Complete data/",files_complete, sep = ""))
     i_0 = which(hi == "QUALITY OF NUMERICAL RESULTS")
-    tmp = str_extract_all(hi[i_0+2],"[0-9]+")[[1]]
-    tmp = as.numeric(paste0(tmp[1],".",tmp[2],"E-",tmp[3]))
+    tmp = NA
+    if(length(i_0)>0){ 
+      tmp = str_extract_all(hi[i_0+2],"[0-9]+")[[1]]
+      tmp = as.numeric(paste0(tmp[1],".",tmp[2],"E-",tmp[3]))
+    }
     
     # record summary data
     sm = out_complete$summaries
@@ -51,8 +54,8 @@ results_pool<-function(p, temp_wd_p_vec, kk, z, rep, starts_txt){
     
     ### Record imputed data ###
     
-    out_imputed<-readModels(target = paste0(temp_wd_p_vec[p],"/Imputed data"), 
-                            what = c("warn_err","summaries"))
+    out_imputed<-invisible(readModels(target = paste0(temp_wd_p_vec[p],"/Imputed data"), 
+                            what = c("warn_err","summaries")))
     
     imputed_files_m = list.files(path = paste0(temp_wd_p_vec[p],"/Imputed data/"), pattern = ".out")
     
@@ -64,8 +67,11 @@ results_pool<-function(p, temp_wd_p_vec, kk, z, rep, starts_txt){
       
       hi = readLines(con = paste(temp_wd_p_vec[p],"/Imputed data/",file_m, sep = ""))
       i_0 = which(hi == "QUALITY OF NUMERICAL RESULTS")
-      tmp = str_extract_all(hi[i_0+2],"[0-9]+")[[1]]
-      tmp = as.numeric(paste0(tmp[1],".",tmp[2],"E-",tmp[3]))
+      tmp = NA
+      if(length(i_0)>0){ 
+        tmp = str_extract_all(hi[i_0+2],"[0-9]+")[[1]]
+        tmp = as.numeric(paste0(tmp[1],".",tmp[2],"E-",tmp[3]))
+      }
       
       out_m = out_imputed[[which(endsWith(names(out_imputed),paste0("imp_",m,".out")))]]
       

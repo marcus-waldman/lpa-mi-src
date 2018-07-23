@@ -113,9 +113,11 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
             
             colMax = ifelse(what_tmp=="stratamelia",J+1,J)
             list_mice = mice::complete(obj_call, "all")
-            prepareMplusData(list_mice, keepCols = 1:colMax,
+            invisible(
+              prepareMplusData(list_mice, keepCols = 1:colMax,
                              filename = paste(temp_wd_p,"/Imputed data/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""), inpfile = FALSE, 
                              overwrite = TRUE, imputed = TRUE)
+              )
 
             dat_ms = read.delim(paste(temp_wd_p,"/Imputed data/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""), header = FALSE)
             for (m in 1:nrow(dat_ms)){

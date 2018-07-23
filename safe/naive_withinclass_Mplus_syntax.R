@@ -14,17 +14,17 @@
 naive_withinclass_Mplus_syntax<-function(mu_k, S_k, usev_vec, Model_Covariance = FALSE, symbol_txt = "*"){
   
   # Syntax for the means with starting values
-    means_txt = paste("[", usev_vec[1],symbol_txt,"];", sep = "")
+    means_txt = paste("[", usev_vec[1],symbol_txt, mu_k[1],"];", sep = "")
     for (t in seq(2,length(usev_vec))){
       means_txt = c(means_txt, 
-                    paste("[", usev_vec[t],symbol_txt,"];", sep = ""))
+                    paste("[", usev_vec[t],symbol_txt, mu_k[t],"];", sep = ""))
     }
     
   # Syntax for the variances with starting values
     vars_txt = paste("Y1*", S_k[1,1], ";", sep = "")
     for (t in seq(2,length(usev_vec))){
       vars_txt = c(vars_txt, 
-                   vars_txt = paste("Y",t,symbol_txt, ";", sep = "")
+                   vars_txt = paste("Y",t,symbol_txt, S_k[t,t], ";", sep = "")
       )
     }
     

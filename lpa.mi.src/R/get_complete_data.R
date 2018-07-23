@@ -88,9 +88,11 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
           save(dfcom_z,
                file = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".RData",sep = ""))
           
-          prepareMplusData(dfcom_z, keepCols = 1:J,
-                           filename = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".dat",sep = ""), inpfile = FALSE, 
-                           overwrite = TRUE)
+          invisible(
+            prepareMplusData(dfcom_z, keepCols = 1:J,
+                             filename = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".dat",sep = ""), inpfile = FALSE, 
+                             overwrite = TRUE)
+          )
       }
       
       return(out_list)

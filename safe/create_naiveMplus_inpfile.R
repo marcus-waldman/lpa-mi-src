@@ -100,11 +100,11 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
         # write the overall Mplus command syntax
         marginals_txt = NULL
         if (K_z>1){
-          marginals_txt = paste("[c#1*", "];", sep = "")
+          marginals_txt = paste("[c#1*", log(pi_z[1]/pi_z[K_z]), "];", sep = "")
           if(K_z>2){
             for(k in seq(2,K_z-1)){
               marginals_txt = c(marginals_txt, 
-                               paste("[c#",k,symbol_txt, "];", sep = ""))
+                               paste("[c#",k,symbol_txt, log(pi_z[k]/pi_z[K_z]), "];", sep = ""))
             }
           }
         }
