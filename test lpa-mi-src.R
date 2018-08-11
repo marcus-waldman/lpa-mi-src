@@ -14,7 +14,10 @@ load("image lpa-mi-pool.RData")
 z=1; p=1; rep = 1;
 
 
-out_comp = get_complete_data(z = z,data_conditions = data_conditions, rep = rep, p = p, save_it = TRUE, temp_wd_p = temp_wd_p_vec)  
+out_comp = get_complete_data(z = z,data_conditions = data_conditions, rep = rep, p = p, save_it = FALSE, temp_wd_p = temp_wd_p_vec)  
+
+
+
 
 out_obs = get_obs_data(z = z, df = out_comp$dfcom, pctmiss_vec = pctmiss_vec, data_conditions = data_conditions, save_it = TRUE, temp_wd_p_vec = temp_wd_p_vec, rep = rep, p = p)
 

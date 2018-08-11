@@ -6,14 +6,18 @@
 #' @param dffolderfiles  (data.frame) with the files and folders of the saved data 
 #' @param temp_wd_p (character). Specifies processor-specific temporary directory
 #' @param type_imputation (logical) Add a "TYPE = IMPUTATION;" command in the Data command of Mplus. Defaults to FALSE (i.e. not TYPE statement in DATA command)
-#' @param savedata (logical) Save the cprobs and estiamtes (savedata = TRUE) or not (savedata = FALSE). Defaults to false.
+#' @param savedata (logical) Save the cpros or not (savedata = FALSE). Defaults to false.
+#' @param estimates (logical) Save the parameter estimates (i.e. include a ESTIMATES = ... statement in the Savedata Mplus command). Defaults to FALSE.
+#' @param results (logical) Save the results (i.e. include a RESULTS = ... statement in the Savedata Mplus command). Defaults to FALSE.
+#' @param save_tech3 (logical) Save the asympototic variance covariance matrix. Defaults to FALSE.
 #' @param starts_txt (character) Custom starting values in Mplus (e.g "20 10;" correpsonds to "STARTS = 20 10;"). Defaults to "0;"
 #' @param symbol_txt ("character") Either "*" or the "(at)" symbol. The latter for fixing parameters.
+#' @param Model_txt (character vector). Defaults to NULL.
 #' @return Saves the Mplus input files for Naive LPA analysis in the the folders specified of dffolderfiles input. Returns a character vector with the the Mplus code.
 #' @export
 #' @examples
 #' create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p)
-create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*"){
+create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, estimates = FALSE, results = FALSE, save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*", Model_txt = NULL){
 
   #
   J = out_get_FMM$J
@@ -96,38 +100,38 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
     
     
     #### Model Command ####
-    
-        # write the overall Mplus command syntax
-        marginals_txt = NULL
-        if (K_z>1){
-          marginals_txt = paste("[c#1*", "];", sep = "")
-          if(K_z>2){
-            for(k in seq(2,K_z-1)){
-              marginals_txt = c(marginals_txt, 
-                               paste("[c#",k,symbol_txt, "];", sep = ""))
+        if (is.null(Model_txt)){
+            # write the overall Mplus command syntax
+            marginals_txt = NULL
+            if (K_z>1){
+              marginals_txt = paste("[c#1*", "];", sep = "")
+              if(K_z>2){
+                for(k in seq(2,K_z-1)){
+                  marginals_txt = c(marginals_txt, 
+                                   paste("[c#",k,symbol_txt, "];", sep = ""))
+                }
+              }
             }
-          }
-        }
-        overall_txt = c("%OVERALL%", 
-                        marginals_txt,
-                        usev_txt)
+            overall_txt = c("%OVERALL%", 
+                            marginals_txt,
+                            usev_txt)
+            
+            # write Mplus syntax for the class-specific models
+            classesmodels_txt = NULL
+            for (k in c(1:K_z)){
+              
+              withinclass_txt = naive_withinclass_Mplus_syntax(mu_k = full_mu_z[1:J_Y_z,k], 
+                                                         S_k = full_S_z[1:J_Y_z,1:J_Y_z, k],
+                                                         usev_vec = usev_vec,
+                                                         Model_Covariance = ifelse(K_z==1,TRUE,FALSE))
+              classesmodels_txt = c(classesmodels_txt, 
+                                    paste("\n %c#",k,"%",sep = ""),
+                                    withinclass_txt)
+            }
         
-        # write Mplus syntax for the class-specific models
-        classesmodels_txt = NULL
-        for (k in c(1:K_z)){
-          
-          withinclass_txt = naive_withinclass_Mplus_syntax(mu_k = full_mu_z[1:J_Y_z,k], 
-                                                     S_k = full_S_z[1:J_Y_z,1:J_Y_z, k],
-                                                     usev_vec = usev_vec,
-                                                     Model_Covariance = ifelse(K_z==1,TRUE,FALSE))
-          classesmodels_txt = c(classesmodels_txt, 
-                                paste("\n %c#",k,"%",sep = ""),
-                                withinclass_txt)
-        }
-    
-    # Put the overall and class-specific models together 
-    Model_txt = c("MODEL:",overall_txt,classesmodels_txt)
-    
+         # Put the overall and class-specific models together 
+         Model_txt = c("MODEL:",overall_txt,classesmodels_txt)
+        } # end If model_txt
     
     #### Make and save the input files ####
     
@@ -143,13 +147,30 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
             Data_txt = c(Data_txt, "TYPE = Imputation;")
           }
           
-          Savedata_txt = NULL
+          Savedata_txt = c("SAVEDATA:")
           if(savedata==TRUE){
-            Savedata_txt = c("SAVEDATA:", 
+            Savedata_txt = c(Savedata_txt,
                                paste("FILE = cprob ", dffolderfiles_z$files[h], ";",sep = ""), 
-                               c("SAVE = cprob;"), 
-                               paste("ESTIMATES = est ", dffolderfiles_z$files[h], ";",sep = ""))
+                               "SAVE = cprob;")
           }
+          if (estimates==TRUE){
+            Savedata_txt = c(Savedata_txt, 
+                             paste("ESTIMATES = est-", dffolderfiles_z$files[h], ";",sep = ""))
+          }
+          if (results==TRUE){
+            Savedata_txt = c(Savedata_txt, 
+                             paste0("RESULTS = results-", dffolderfiles_z$files[h], ";"))
+          }
+          if (save_tech3==TRUE){
+            Savedata_txt = c(Savedata_txt, 
+                             paste0("TECH3 = tech3-", dffolderfiles_z$files[h], ";"))
+          }
+          if (length(Savedata_txt)>1){Savedata_txt = c(Savedata_txt, "FORMAT = F10.6;") }
+          
+          # Create the output
+          Output_txt = c("OUTPUT:", 
+                         "tech1;", 
+                         "svalues;")
           
           # Put all the Mplus commands together into a single text vector
           mplus_txt = c(Title_txt, "\n",
@@ -157,6 +178,7 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
                         Variables_txt, "\n",
                         Analysis_txt, "\n", 
                         Model_txt, "\n",
+                        Output_txt, "\n",
                         Savedata_txt)
           
           # Change directory and save the Mplus input file 

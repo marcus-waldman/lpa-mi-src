@@ -5,8 +5,9 @@
 \title{Stratified Amelia Imputation}
 \usage{
 create_naiveMplus_inpfile(z, out_get_FMM, dffolderfiles, temp_wd_p,
-  savedata = FALSE, type_imputation = FALSE, starts_txt = "0;",
-  symbol_txt = "*")
+  savedata = FALSE, estimates = FALSE, results = FALSE,
+  save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;",
+  symbol_txt = "*", Model_txt = NULL)
 }
 \arguments{
 \item{z}{(integer) Condition number}
@@ -17,13 +18,21 @@ create_naiveMplus_inpfile(z, out_get_FMM, dffolderfiles, temp_wd_p,
 
 \item{temp_wd_p}{(character). Specifies processor-specific temporary directory}
 
-\item{savedata}{(logical) Save the cprobs and estiamtes (savedata = TRUE) or not (savedata = FALSE). Defaults to false.}
+\item{savedata}{(logical) Save the cpros or not (savedata = FALSE). Defaults to false.}
+
+\item{estimates}{(logical) Save the parameter estimates (i.e. include a ESTIMATES = ... statement in the Savedata Mplus command). Defaults to FALSE.}
+
+\item{results}{(logical) Save the results (i.e. include a RESULTS = ... statement in the Savedata Mplus command). Defaults to FALSE.}
+
+\item{save_tech3}{(logical) Save the asympototic variance covariance matrix. Defaults to FALSE.}
 
 \item{type_imputation}{(logical) Add a "TYPE = IMPUTATION;" command in the Data command of Mplus. Defaults to FALSE (i.e. not TYPE statement in DATA command)}
 
 \item{starts_txt}{(character) Custom starting values in Mplus (e.g "20 10;" correpsonds to "STARTS = 20 10;"). Defaults to "0;"}
 
 \item{symbol_txt}{("character") Either "*" or the "(at)" symbol. The latter for fixing parameters.}
+
+\item{Model_txt}{(character vector). Defaults to NULL.}
 }
 \value{
 Saves the Mplus input files for Naive LPA analysis in the the folders specified of dffolderfiles input. Returns a character vector with the the Mplus code.

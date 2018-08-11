@@ -9,7 +9,7 @@
 #' @examples
 
 
-check_convergence<-function(file, folder_wd = get.wd(), starts_txt = "0;"){
+check_convergence<-function(file, folder_wd = getwd(), starts_txt = "0;"){
 
 #folder_wd = "C:/Users/marcu/Dropbox/Dissertation Proposal/Paper 1/Simulation Code/Impute LPA Sim - known K -  v1_0/Error diagnosis/p1/Complete data"
 #file = "Naive dfcom p1 z1 rep15 v2.out"
