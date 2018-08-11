@@ -5,7 +5,8 @@ rm(list = ls())
 library(roxygen2)
 library(devtools)
 
-dropbox = "C:/Users/marcu/Dropbox"
+#dropbox = "C:/Users/marcu/Dropbox"
+dropbox("D:/Dropbox")
 
 src_dir= paste(dropbox,"/Dissertation/lpa-mi-src", sep = "")
 #create("lpa.mi.src")
