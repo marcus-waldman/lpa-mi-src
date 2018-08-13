@@ -4,14 +4,21 @@
 \alias{check_convergence}
 \title{Check convergence}
 \usage{
-check_convergence(file, folder_wd = get.wd(), starts_txt = "0;")
+check_convergence(file, folder_wd = getwd(), starts_txt = "0;",
+  type_imputation = FALSE)
 }
 \arguments{
 \item{file}{(integer)}
+
+\item{starts_txt}{(character)}
+
+\item{type_imputation}{(logical)}
+
+\item{folder}{(character)}
 }
 \value{
 (logical)
 }
 \description{
-Check convergence
+Scans an .out file from an Mplus model and looks for signs of convergence.
 }

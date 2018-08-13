@@ -25,8 +25,8 @@ get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA, p = NA,
 \item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
 }
 \value{
-out_list  (list) with the following elements: 
-      (A) list_obsdf_z  (list) with length(pctmiss_vec) elements, each corresponding to a 
+out_list  (list) with the following elements:
+      (A) list_obsdf_z  (list) with length(pctmiss_vec) elements, each corresponding to a
                          (data.frame) of the observed with %missing values for the z-th condition number
       (B) dffolderfiles (data.frame) with the files and folders of the saved data
 }

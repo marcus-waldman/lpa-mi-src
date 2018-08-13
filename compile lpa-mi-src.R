@@ -1,3 +1,5 @@
+
+
 rm(list = ls())
 
 #remove.packages("lpa.mi.src")
@@ -6,7 +8,7 @@ library(roxygen2)
 library(devtools)
 
 #dropbox = "C:/Users/marcu/Dropbox"
-dropbox("D:/Dropbox")
+dropbox="D:/Dropbox"
 
 src_dir= paste(dropbox,"/Dissertation/lpa-mi-src", sep = "")
 #create("lpa.mi.src")

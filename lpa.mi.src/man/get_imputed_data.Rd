@@ -37,10 +37,9 @@ A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 }
 \value{
 out_list - (list) with the following elements
-      (A) obj_call - (mids) mids object for imputed data for the
-          (i)   z-th data condition number, 
-          (ii)  pm-th percent missing
-          (iii) pva-th imputation method (see methods_list for details)
+      (A) obj_call - (mids) named mids object for imputed data each
+          (i)  pm-th percent missing
+          (ii) pva-th imputation method (see methods_list for details)
       (B) dffolderfiles (data.frame) with the files and folders for each of the save imputed data sets
 }
 \description{
