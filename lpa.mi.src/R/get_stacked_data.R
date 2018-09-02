@@ -18,7 +18,8 @@
 
 
 get_stacked_data<-function(z, list_imputed, methods_list, pctmiss_vec,
-                           save_it = FALSE, rep = NA, p = NA,  temp_wd_p_vec = NULL){
+                           save_it = FALSE, rep = NA, p = NA, temp_wd_p_vec = NULL){
+
 
   temp_wd_p = temp_wd_p_vec[p]
 
@@ -43,7 +44,7 @@ get_stacked_data<-function(z, list_imputed, methods_list, pctmiss_vec,
           names(stack_df) = ns;
 
 
-          cols_discard = which(ns == "strata" | ns == "m" | ns == "id")
+          cols_discard = which(ns == "m" | ns == "id")
 
           if (save_it){
             invisible(

@@ -11,6 +11,7 @@ Imports:
     doParallel (>= 1.0.11),
     doRNG (>= 1.7.1),
     foreach (>= 1.4.4),
+    gaussDiff(>= 1.1),
     ggplot2 (>= 2.2.1),
     lavaan (>= 0.6-1),
     MASS (>= 7.3-49),

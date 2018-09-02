@@ -1,8 +1,8 @@
-
-
 rm(list = ls())
 
-#remove.packages("lpa.mi.src")
+
+remove.packages("lpa.mi.src")
+.rs.restartR()
 
 library(roxygen2)
 library(devtools)
@@ -18,6 +18,9 @@ document()
 
 setwd(src_dir)
 install("lpa.mi.src")
+
+rm(list = ls())
+
 
 #install_github("marcus-waldman/lpa-mi-src/lpa.mi.src")
 #library("lpa.mi.src")

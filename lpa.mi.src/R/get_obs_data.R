@@ -122,11 +122,13 @@ get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
                                                 data_condition = z, m = NA) )
 
       # Save a copy in RData format
-      save(obsdf_z,
-           file = paste0(temp_wd_p,"/Observed data/pm",pm,"/obsdf p", p, " z", z," rep", rep, " pm", pm,".RData"))
+      # save(obsdf_z,
+      #      file = paste0(temp_wd_p,"/Observed data/pm",pm,"/obsdf p", p, " z", z," rep", rep, " pm", pm,".RData"))
 
       # Save a ".dat" file for Mplus
-      prepareMplusData(obsdf_z, keepCols = 1:J,
+      nms = names(obsdf_z)
+      jkeep = which(startsWith(nms,"Y") | startsWith(nms,"X") | nms=="subpop")
+      prepareMplusData(obsdf_z, keepCols = jkeep,
                        filename = paste0(temp_wd_p,"/Observed data/pm",pm,"/obsdf p", p, " z", z, " rep", rep, " pm", pm,".dat"), inpfile = FALSE,
                        overwrite = TRUE)
     }

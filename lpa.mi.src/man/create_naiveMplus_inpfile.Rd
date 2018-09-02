@@ -44,4 +44,5 @@ Creates an input file that fits a simple (i.e., naive) LPA model
 }
 \examples{
 create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p)
+
 }

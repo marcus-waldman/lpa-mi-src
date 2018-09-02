@@ -68,9 +68,9 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
       names(dfcom_z)[1:J_Y_z] = paste("Y",1:J_Y_z, sep = "")
       if (J_Xinc_z>0){names(dfcom_z)[seq(J_Y_z+1,J_Y_z+J_Xinc_z, by = 1)]=paste("Xinc",1:J_Xinc_z,sep = "")}
       if (J_Xcom_z>0){names(dfcom_z)[seq(J_Y_z+J_Xinc_z+1, J_Y_z+J_Xinc_z+J_Xcom_z,by = 1)]= paste("Xcom",1:J_Xcom_z,sep = "")}
-      dfcom_z = transform(dfcom_z, class = class_z)
+      dfcom_z = transform(dfcom_z, subpop = class_z)
       for (k in 1:K_z){
-        inds_k = which(dfcom_z$class==k)
+        inds_k = which(dfcom_z$subpop==k)
         n_k = length(inds_k)
         temp =  mvrnorm(n = n_k, mu = mu_z[,k], Sigma = S_z[,,k])
         dfcom_z[inds_k,1:J] = temp
@@ -85,14 +85,16 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
                                      files = paste("dfcom p", p," z",z," rep",rep, ".dat",sep = ""), 
                                      data_condition = z, m = NA)
           
-          save(dfcom_z,
-               file = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".RData",sep = ""))
+          # save(dfcom_z,
+          #      file = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".RData",sep = ""))
           
-          invisible(
-            prepareMplusData(dfcom_z, keepCols = 1:J,
-                             filename = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".dat",sep = ""), inpfile = FALSE, 
+
+            nms = names(dfcom_z)
+            jkeep = which(startsWith(nms,"Y") | startsWith(nms,"X") | nms=="subpop")
+            prepareMplusData(dfcom_z, keepCols = jkeep,
+                             filename = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".dat",sep = ""), 
+                             inpfile = FALSE, 
                              overwrite = TRUE)
-          )
       }
       
       return(out_list)

@@ -18,6 +18,7 @@
 #' @export
 #' @examples
 #' create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p)
+#' 
 create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, estimates = FALSE, results = FALSE, save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*", Model_txt = NULL, weight = FALSE){
 
   #
@@ -67,7 +68,8 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
         names_Xcom = ifelse(J_Xcom_z>0,  paste("Xcom", seq(1,J_Xcom_z), sep = ""), "")
         names_vec = c(paste("Y",seq(1,J_Y_z), sep = ""),
                       names_Xinc,
-                      names_Xcom)
+                      names_Xcom, 
+                      "subpop")
         names_txt = names_vec[1]
         for(t in seq(2,length(names_vec))){
           names_txt = paste(names_txt, names_vec[t], sep = " ")
@@ -92,6 +94,7 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
         Variables_txt = c("VARIABLE:",
                           paste("NAMES = ", names_txt, sep = ""),
                           paste("USEV = ", usev_txt, sep = ""),
+                          "AUXILIARY = subpop;",
                           paste("CLASSES = ", classes_txt, sep = ""),
                           c("MISSING = .;"))
         if (weight) {Variables_txt = c(Variables_txt, "WEIGHT = wgt;")}

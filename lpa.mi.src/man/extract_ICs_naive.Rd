@@ -4,13 +4,13 @@
 \alias{extract_ICs_naive}
 \title{Get ICs}
 \usage{
-extract_ICs_naive(is_Complete, p, temp_wd_p_vec, kk, z, rep, starts_txt,
-  pm = NA, pva = NA)
+extract_ICs_naive(TYPE = "None", DATATYPE = NULL, p, temp_wd_p_vec, kk,
+  z, rep, starts_txt, pm = NA, pva = NA, type_imputation = FALSE)
 }
 \arguments{
-\item{is_Complete}{(logical) If true, then looks in ~/Complete data folder; otherwise, reads out of ~/Observed data}
+\item{TYPE}{(character) Pooling type. Defaults to "NONE"}
 
-\item{p}{(integer) Processor number}
+\item{DATATYPE}{(charcter) One of (a) "Complete data", (b) "Observed data", (c) "Imputed data", or (d) "Stacked data"}
 
 \item{kk}{(integer) Fitted number of classes}
 

@@ -75,7 +75,8 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
           args_tmp = methods_list$args[[pva]]
           if (what_tmp == "mice"){
             args_tmp$data = obsdf
-            args_tmp$data.init = list_get_complete$dfcom[,1:J]
+    # Note that data.init is commented out because it was leading to the same pvs for each imputation. Reason unknown
+            #args_tmp$data.init = list_get_complete$dfcom[,1:J]
             if (args_tmp$method == "bygroup"){
               args_tmp$group = list_get_complete$dfcom$class
             }
@@ -85,7 +86,7 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
           }
           if (what_tmp == "stratamelia"){
             args_tmp$x = obsdf
-            args_tmp$strata = list_get_complete$dfcom$class
+            args_tmp$strata = list_get_complete$dfcom$subpop
           }
           # Run the imputation procedure
           obj_call = do.call(what = what_tmp, args = args_tmp)
@@ -100,10 +101,10 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
                                            data.frame(folders = paste0("Imputed data/pm",pm,"/pva",pva),
                                                 files = paste("impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat",sep = ""),
                                                 data_condition = z, m = NA) )
-            # Save a copy of the obj_call
-            save(obj_call,
-                 file = paste0(temp_wd_p,"/Imputed data/pm",pm,"/pva",pva,"/mids p", p," z",z," rep",rep, " pm", pm, " pva", pva,".RData")
-            )
+            # # Save a copy of the obj_call
+            # save(obj_call,
+            #      file = paste0(temp_wd_p,"/Imputed data/pm",pm,"/pva",pva,"/mids p", p," z",z," rep",rep, " pm", pm, " pva", pva,".RData")
+            # )
 
 
             # Save a  ".dat" file of the imputed data set for Mplus
@@ -111,7 +112,9 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
             colMax = ifelse(what_tmp=="stratamelia",J+1,J)
             list_mice = mice::complete(obj_call, "all")
             invisible(
-              prepareMplusData(list_mice, keepCols = 1:colMax,
+              #nms = names(list_get_obs$obsdf_z)
+              #jkeep = which(startsWith(nms,"Y") | startsWith(nms,"X") | nms=="subpop")
+              prepareMplusData(list_mice, #keepCols = jkeep,
                              filename = paste0(temp_wd_p,"/Imputed data/pm",pm,"/pva",pva,"/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat"), inpfile = FALSE,
                              overwrite = TRUE, imputed = TRUE)
               )

@@ -1,6 +1,5 @@
 #' Get individual ICs for stacked type pooling method
 #'
-#'
 #' @param p  (integer) Processor number
 #' @param temp_wd_p_vec
 #' @param kk (integer) Fitted number of classes
