@@ -4,8 +4,8 @@
 \alias{naive_withinclass_Mplus_syntax}
 \title{Create the within}
 \usage{
-naive_withinclass_Mplus_syntax(mu_k, S_k, usev_vec,
-  Model_Covariance = FALSE, symbol_txt = "*")
+naive_withinclass_Mplus_syntax(mu_k, S_k, usev_vec, Model_Covariance = FALSE,
+  symbol_txt = "*")
 }
 \arguments{
 \item{mu_k}{- (vector) of length J_Y_z (where J_Y_z is the number of indicators)}

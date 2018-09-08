@@ -131,7 +131,7 @@ get_obs_data<-function(z, df,pctmiss_vec,data_conditions, rep = NA, p = NA,
       prepareMplusData(obsdf_z, keepCols = jkeep,
                        filename = paste0(temp_wd_p,"/Observed data/pm",pm,"/obsdf p", p, " z", z, " rep", rep, " pm", pm,".dat"), inpfile = FALSE,
                        overwrite = TRUE)
-    }
+    }# End save_it == TRUE
 
   }
   out_list$list_obsdf = list_obsdf_z

@@ -35,6 +35,7 @@
 get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, data_conditions, pctmiss_vec,
                            rep = NA, p = NA, save_it = FALSE, temp_wd_p_vec = NULL,...){
 
+    require(Amelia)
     require(mice)
     require(miceadds)
     require(mitools)
@@ -88,11 +89,41 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
             args_tmp$x = obsdf
             args_tmp$strata = list_get_complete$dfcom$subpop
           }
+          if(what_tmp == "amelia"){
+            args_tmp$x = obsdf
+          }
           # Run the imputation procedure
           obj_call = do.call(what = what_tmp, args = args_tmp)
+
+          # Transform the data, as needed
+          if (what_tmp == "amelia"){
+            longimp_df = obsdf
+            longimp_df = transform(longimp_df, .imp = 0)
+            if (obj_call$m == 1){
+              tmp_df = data.frame(obj_call$imputations$imp1)
+              tmp_df = transform(longimp_df, .imp = 1)
+              longimp_df = rbind(longimp_df, tmp_df)
+            } else {
+              for (mm in 1:obj_call$m){
+                tmp_df = data.frame(obj_call$imputations[,,mm])
+                names(tmp_df) = names(x)
+                tmp_df = transform(tmp_df, subpop = strata, .imp = mm)
+                longimp_df = rbind(longimp_df, tmp_df)
+              } #end for mm
+            } #end if (obj_call$m == 1)
+            mids_obj = as.mids(longimp_df)
+            obj_call = mids_obj
+          }
+
           vv = vv+1
           tmp_list[[vv]] = obj_call
           names(tmp_list)[vv] = paste0("mids_pm",pm,"pva",pva)
+
+          # Add in subpop
+          #obj_call = cbind.mids(obj_call, subpop = list_get_complete$dfcom$subpop)
+          #print("hello world")
+         #print(class(obj_call))
+
 
           if (save_it == TRUE){
             require(MplusAutomation)
@@ -111,13 +142,15 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
 
             colMax = ifelse(what_tmp=="stratamelia",J+1,J)
             list_mice = mice::complete(obj_call, "all")
-            invisible(
+            for (m in 1:length(list_mice)){
+              list_mice[[m]] = transform(list_mice[[m]], subpop = list_get_complete$dfcom$subpop)
+            }
               #nms = names(list_get_obs$obsdf_z)
               #jkeep = which(startsWith(nms,"Y") | startsWith(nms,"X") | nms=="subpop")
-              prepareMplusData(list_mice, #keepCols = jkeep,
+            prepareMplusData(list_mice, #keepCols = jkeep,
                              filename = paste0(temp_wd_p,"/Imputed data/pm",pm,"/pva",pva,"/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat"), inpfile = FALSE,
                              overwrite = TRUE, imputed = TRUE)
-              )
+
 
             dat_ms = read.delim(paste0(temp_wd_p,"/Imputed data/pm",pm,"/pva",pva,"/impdf p", p," z",z," rep",rep, " pm", pm, " pva", pva,".dat"), header = FALSE)
             for (m in 1:nrow(dat_ms)){

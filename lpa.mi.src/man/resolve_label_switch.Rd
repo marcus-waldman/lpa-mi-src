@@ -5,8 +5,8 @@
 \title{Resolve label switching with population values known.}
 \usage{
 resolve_label_switch(mu_est_mat, S_est_array, z, data_conditions,
-  parameters_df = NULL, name = "glpk", t_max = 30, approximate = 0,
-  round_cplex = 0, trace_cplex = 0)
+  parameters_df = NULL, DMAT = NULL, name = "glpk", t_max = 30,
+  approximate = 0, round_cplex = 0, trace_cplex = 0)
 }
 \arguments{
 \item{mu_est_mat}{(matrix)}
@@ -19,7 +19,9 @@ resolve_label_switch(mu_est_mat, S_est_array, z, data_conditions,
 
 \item{parameters_df}{(data.frame) Defaults to Null. If non-Null, switches the labels in the data frame.}
 
-\item{name}{(character) Deflau}
+\item{DMAT}{(matrix) Optional. A supplied K-by-K distance matrix. If not supplied, then one is calculated using the KL-Divergences.}
+
+\item{name}{(character) Defaults to "glpk"}
 
 \item{t_max}{(integer)}
 
@@ -30,10 +32,10 @@ resolve_label_switch(mu_est_mat, S_est_array, z, data_conditions,
 \item{trace_cplex}{(integer)}
 }
 \value{
-(list) A list with the following things: 
+(list) A list with the following things:
           (a) class_switched - (logical) identifies if class switching had occurred.
           (b) map_from - (vector) always just 1:K showing class definitions from sample
-          (c) map_to - (NULL or vector) same as map_from if no class switching. 
+          (c) map_to - (NULL or vector) same as map_from if no class switching.
                      Otherwise it is the corresponding population-based classes from sample classes
           (d) parameters_df (data.frame). Only included if parameters_df input is non-null. Same as input, except labels are switch.
 }

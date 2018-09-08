@@ -4,9 +4,9 @@
 \alias{fit_til_convergence}
 \title{Fit mixture models in Mplus until convergence}
 \usage{
-fit_til_convergence(p, z, temp_wd_p_vec, target_wd, dff_target,
-  pop_params_kk, starts0 = 20, mX_max = 7, type_imputation = FALSE,
-  m = NA, ...)
+fit_til_convergence(p, z, temp_wd_p_vec, target_wd, dff_target, pop_params_kk,
+  starts0 = 20, mX_max = 7, type_imputation = FALSE, m = NA,
+  readModels = FALSE, ...)
 }
 \arguments{
 \item{p}{Processor}
@@ -26,6 +26,8 @@ fit_til_convergence(p, z, temp_wd_p_vec, target_wd, dff_target,
 \item{mX_max}{Highest exponents to go to (ie.e max mX for 2^mx)}
 
 \item{type_imputation}{(logical) passed to create_NaiveMplus_inpfile() or check_convergence()}
+
+\item{readModels}{(logical) should readModels be used?}
 
 \item{...}{Other arguments to send to create_naiveMplus_inpfile()}
 }

@@ -10,6 +10,7 @@
 #' @param starts0 Must be a multiple of 10. Defaults to 20.
 #' @param mX_max Highest exponents to go to (ie.e max mX for 2^mx)
 #' @param type_imputation (logical) passed to create_NaiveMplus_inpfile() or check_convergence()
+#' @param readModels (logical) should readModels be used?
 #' @param ... Other arguments to send to create_naiveMplus_inpfile()
 #' @return (data.frame) results_df
 #' @export
@@ -18,7 +19,8 @@
 
 
 
-fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_params_kk, starts0 = 20, mX_max = 7, type_imputation = FALSE, m = NA, ...){
+fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_params_kk,
+                              starts0 = 20, mX_max = 7, type_imputation = FALSE, m = NA, readModels = FALSE, ...){
 
 
     if(starts0%%10 != 0){error("starts0 needs to be a multiple of 10")}
@@ -39,7 +41,7 @@ fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_pa
         inp_complete = do.call(what = "create_naiveMplus_inpfile",
                               args = list(z = z, out_get_FMM = pop_params_kk,
                                           dffolderfiles = dff_target, temp_wd_p = temp_wd_p_vec[p],
-                                          starts_txt = starts_txt, type_imputation = type_imputation))
+                                          starts_txt = starts_txt, type_imputation = type_imputation, ...))
 
         runModels(target = target_wd, filefilter = list.files(path = target_wd, pattern = pattern_inp),logFile = NULL)
         converged = check_convergence(file = list.files(path = target_wd, pattern = pattern_out),
@@ -62,8 +64,21 @@ fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_pa
       tmp = as.numeric(paste0(tmp[1],".",tmp[2],"E-",tmp[3]))
     }
 
+    # Extract starting values
+    svals_txt = extract_svals(file = list.files(path = target_wd, pattern = pattern_out, full.names = FALSE), path = target_wd)
+
+    out_readModels = NULL
+    if (readModels == TRUE){
+      out_file= list.files(path = target_wd, pattern = pattern_out, full.names = FALSE)
+      out_readModels = readModels(target = target_wd, filefilter = gsub(".out", "", out_file))
+    }
     problem = (mX>=mX_max & converged == FALSE)
 
-    out_list = list(Converged = converged, Rcond = tmp, Starts = starts0*2^(mX), problem = problem)
+    out_list = list(Converged = converged,
+                    Rcond = tmp,
+                    Starts = starts0*2^(mX),
+                    problem = problem,
+                    model_txt = svals_txt,
+                    out_readModels = out_readModels)
     return(out_list)
 }
