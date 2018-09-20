@@ -4,10 +4,12 @@
 \alias{get_mu_all}
 \title{Mean locations of spheres}
 \usage{
-get_mu_all(J)
+get_mu_all(J, t_rotate = 0)
 }
 \arguments{
 \item{J}{(integer) Dimension of space R^J}
+
+\item{t_rotate}{(numeric) Rotation angle in radians supplied to get_rotation_matrix. Defaults to no rotation (i.e. t_rotate = 0)}
 }
 \value{
 (matrix) Matrix of mean column vectors for each unit sphere.

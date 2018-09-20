@@ -2,12 +2,13 @@
 #'
 #' Returns locations of mean vectors for spheres all separated by unit Euclidean distance
 #' @param J  (integer) Dimension of space R^J
+#' @param t_rotate (numeric) Rotation angle in radians supplied to get_rotation_matrix. Defaults to no rotation (i.e. t_rotate = 0)
 #' @return (matrix) Matrix of mean column vectors for each unit sphere.
 #' @export
 #' @examples
 #' get_mu_all(J)
 
-get_mu_all<-function(J){
+get_mu_all<-function(J, t_rotate = 0){
 
   require(stats)  #(>= 3.5.0)
 
@@ -31,6 +32,11 @@ get_mu_all<-function(J){
       mu_all[1:(k-1),k] = obj_optim$par
     }
   }
-
+  
+  if (t_rotate != 0){
+    print("hello world")
+    A = get_rotation_matrix(t = t_rotate, dim = J)
+    mu_all = A%*%mu_all
+  }
   return(mu_all)
 }

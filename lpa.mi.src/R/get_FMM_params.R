@@ -3,6 +3,7 @@
 #' Obtain the population parameters given the data
 #' @param z  (integer) condition identifier (number) for the complete data (as specified by data_conditions)
 #' @param data_conditions  (data.frame) simulation conditions pertaining to the complete data
+#' @param t_rotate (numeric) Rotation angle in radians. Defaults to no rotation (i.e. t_rotate = 0)
 #' @return out_list  (list) with the following elements: 
 #'        (A) mu_z - (J-by-K matrix) with the means for the j-th variable in the k-th class.
 #'        (B) S_z -  (J-by-J-by-K array) for the k-th class's covariance matrix
@@ -18,7 +19,7 @@
 #' @examples
 #' get_FMM_params(z,data_conditions)
 
-get_FMM_params<-function(z,data_conditions){
+get_FMM_params<-function(z,data_conditions, t_rotate = 0){
   
 
   # Last revised: 12/16/2017
@@ -74,7 +75,7 @@ get_FMM_params<-function(z,data_conditions){
     
     #### Construct the population parameters using the information in the previous section #####
       # Mean vectors of the latent class indicators 
-      mu_all = get_mu_all(J = J_Y_z)
+      mu_all = get_mu_all(J = J_Y_z, t_rotate = t_rotate)
       mu_Y_z = MD_z*mu_all[,round(seq(1,ncol(mu_all), len = K_z),0)]
       
       # Mean vecotrs of the covariates
