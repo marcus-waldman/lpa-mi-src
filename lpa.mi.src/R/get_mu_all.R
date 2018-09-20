@@ -34,7 +34,7 @@ get_mu_all<-function(J, t_rotate = 0){
   }
   
   if (t_rotate != 0){
-    print("hello world")
+#    print("hello world")
     A = get_rotation_matrix(t = t_rotate, dim = J)
     mu_all = A%*%mu_all
   }
