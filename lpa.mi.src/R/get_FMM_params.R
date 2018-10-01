@@ -3,7 +3,6 @@
 #' Obtain the population parameters given the data
 #' @param z  (integer) condition identifier (number) for the complete data (as specified by data_conditions)
 #' @param data_conditions  (data.frame) simulation conditions pertaining to the complete data
-#' @param t_rotate (numeric) Rotation angle in radians. Defaults to no rotation (i.e. t_rotate = 0)
 #' @return out_list  (list) with the following elements: 
 #'        (A) mu_z - (J-by-K matrix) with the means for the j-th variable in the k-th class.
 #'        (B) S_z -  (J-by-J-by-K array) for the k-th class's covariance matrix
@@ -19,27 +18,7 @@
 #' @examples
 #' get_FMM_params(z,data_conditions)
 
-get_FMM_params<-function(z,data_conditions, t_rotate = 0){
-  
-
-  # Last revised: 12/16/2017
-  #
-  # Inputs: 
-  #     z - (integer) condition identifier (number) for the complete data (as specified by data_conditions)
-  #     data_conditions - (data.frame) simulation conditions pertaining to the complete data
-  # Outputs:
-  #     out_list with the following elements:
-  #        A) mu_z - (J-by-K matrix) with the means for the j-th variable in the k-th class.
-  #        B) S_z -  (J-by-J-by-K array) for the k-th class's covariance matrix
-  #        C) pi_z - (vector with K elements) marginal probabilties for the k-th class
-  #        D) K_z - (integer) specifying the number of classes in z-th data condition
-  #        E) J_Y_z - - (integer) specifying the number of latent class indicators in z-th data condition
-  #        F) J_Xcom_z - - (integer) specifying the number complete data missing data corrleates in z-th data condition
-  #        G) J_Xinc_z - - (integer) specifying the number incomplete data missing data correlates in z-th data condition
-  #        H) J - - (integer) specifying the total number of variables in the joint distribution in z-th data condition
-  #        I) MD_z - (numeric) specifying the class separation in z-th data condition
-  #        J) rho_YX_z - - (numeric) specifying the missing data correlates correlation in z-th data condition
-
+get_FMM_params<-function(z,data_conditions){
 
     ##### Needed Information from the data_conditions data frame #####
     
@@ -71,11 +50,15 @@ get_FMM_params<-function(z,data_conditions, t_rotate = 0){
       if (C_modifies_YX_z==TRUE){ kvec_rho_YX=seq(-1*rho_YX_z,rho_YX_z,len = K_z) }
       if (C_modifies_YX_z==FALSE){ kvec_rho_YX=rep(rho_YX_z, K_z) }
       
-    
+      #Ensure that t_rotate is specified
+      if ("t_rotate" %in% names(data_conditions) == FALSE){
+        stop("t_rotate must be a variable in data_conditions")
+      }
+      
     
     #### Construct the population parameters using the information in the previous section #####
       # Mean vectors of the latent class indicators 
-      mu_all = get_mu_all(J = J_Y_z, t_rotate = t_rotate)
+      mu_all = get_mu_all(J = J_Y_z, t_rotate = data_conditions$t_rotate[z])
       mu_Y_z = MD_z*mu_all[,round(seq(1,ncol(mu_all), len = K_z),0)]
       
       # Mean vecotrs of the covariates

@@ -7,7 +7,6 @@
 #' @param p (integer) Processor number (defaults to 1).
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
 #' @param temp_wd_p_vec (character vector). Required if save_it==TRUE.  processor-specific temporary directory
-#' @param t_rotate (numeric) Rotation angle in radians. Defaults to no rotation (i.e. t_rotate = 0).
 #' @return out_list  (list) with the following elements
 #'       (A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 #'       (B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
@@ -18,7 +17,7 @@
 #' @examples
 #' get_complete_data(z,data_conditions,save_it = FALSE)
 
-get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE, temp_wd_p_vec = NULL, t_rotate = 0){
+get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE, temp_wd_p_vec = NULL){
   
 #Stuff for error diagnosing:
 # rep = 1
@@ -37,7 +36,7 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
       }  
       
       # Get population-level parameters for the mixture model 
-      out_get_FMM<-get_FMM_params(z,data_conditions, t_rotate)
+      out_get_FMM<-get_FMM_params(z,data_conditions)
       mu_z = out_get_FMM$mu_z; S_z = out_get_FMM$S_z; pi_z = out_get_FMM$pi_z; K_z = out_get_FMM$K_z
       J_Y_z = out_get_FMM$J_Y_z; J_Xinc_z = out_get_FMM$J_Xinc_z; J_Xcom_z = out_get_FMM$J_Xcom_z
       J = out_get_FMM$J; MD_z = out_get_FMM$MD_z; rho_YX_z = out_get_FMM$rho_YX_z

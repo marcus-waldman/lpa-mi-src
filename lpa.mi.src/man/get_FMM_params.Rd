@@ -4,14 +4,12 @@
 \alias{get_FMM_params}
 \title{Population parameters for the LPA/FMM model.}
 \usage{
-get_FMM_params(z, data_conditions, t_rotate = 0)
+get_FMM_params(z, data_conditions)
 }
 \arguments{
 \item{z}{(integer) condition identifier (number) for the complete data (as specified by data_conditions)}
 
 \item{data_conditions}{(data.frame) simulation conditions pertaining to the complete data}
-
-\item{t_rotate}{(numeric) Rotation angle in radians. Defaults to no rotation (i.e. t_rotate = 0)}
 }
 \value{
 out_list  (list) with the following elements: 

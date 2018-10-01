@@ -13,9 +13,12 @@ load("image lpa-mi-pool.RData")
 
 z=1; p=1; rep = 1;
 
-out_FMM = get_FMM_params(z, data_conditions, t_rotate = pi/4)
+data_conditions = transform(data_conditions, t_rotate = pi/4)
+
+out_FMM = get_FMM_params(z, data_conditions)
 out_FMM$mu_z
-out_comp = get_complete_data(z = z,data_conditions = data_conditions, rep = rep, p = p, save_it = FALSE, temp_wd_p = temp_wd_p_vec, t_rotate = pi/2)  
+out_comp = get_complete_data(z = z,data_conditions = data_conditions, rep = rep, p = p, 
+                             save_it = FALSE, temp_wd_p = temp_wd_p_vec)  
 
 
 

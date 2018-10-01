@@ -39,7 +39,7 @@ get_stacked_data<-function(z, list_imputed, methods_list, pctmiss_vec,
           idx_mids = which(names(list_imputed$obj_call)==paste0("mids_pm",pm,"pva",pva))
 
           mids = list_imputed$obj_call[[idx_mids]]
-          stack_df = complete(mids, action = "long", include = FALSE) %>% transform(wgt = 1/mids$m)
+          stack_df = mice::complete(mids, action = "long", include = FALSE) %>% transform(wgt = 1/mids$m)
           ns = names(stack_df); ns[1] = "m"; ns[2] = "id";
           names(stack_df) = ns;
 

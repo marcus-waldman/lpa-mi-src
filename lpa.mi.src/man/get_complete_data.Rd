@@ -5,7 +5,7 @@
 \title{Simulate complete LPA data for simulation study}
 \usage{
 get_complete_data(z, data_conditions, rep = NA, p = NA, save_it = FALSE,
-  temp_wd_p_vec = NULL, t_rotate = 0)
+  temp_wd_p_vec = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}
@@ -19,8 +19,6 @@ get_complete_data(z, data_conditions, rep = NA, p = NA, save_it = FALSE,
 \item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
 
 \item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
-
-\item{t_rotate}{(numeric) Rotation angle in radians. Defaults to no rotation (i.e. t_rotate = 0).}
 }
 \value{
 out_list  (list) with the following elements
