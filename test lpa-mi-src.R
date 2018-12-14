@@ -15,6 +15,8 @@ z=1; p=1; rep = 1;
 
 data_conditions = transform(data_conditions, t_rotate = pi/4)
 
+get_Plist(z, data_conditions)
+
 out_FMM = get_FMM_params(z, data_conditions)
 out_FMM$mu_z
 out_comp = get_complete_data(z = z,data_conditions = data_conditions, rep = rep, p = p, 
