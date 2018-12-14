@@ -78,7 +78,7 @@ fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_pa
                     Rcond = tmp,
                     Starts = starts0*2^(mX),
                     problem = problem,
-                    model_txt = svals_txt,
+                    model_txt = c("MODEL: \n", svals_txt),
                     out_readModels = out_readModels)
     return(out_list)
 }

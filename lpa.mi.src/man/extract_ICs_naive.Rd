@@ -4,8 +4,8 @@
 \alias{extract_ICs_naive}
 \title{Get ICs}
 \usage{
-extract_ICs_naive(TYPE = "None", DATATYPE = NULL, p, temp_wd_p_vec, kk, z,
-  rep, starts_txt, pm = NA, pva = NA, type_imputation = FALSE)
+extract_ICs_naive(TYPE = "None", DATATYPE = NULL, p, temp_wd_p_vec, kk,
+  z, rep, starts_txt, pm = NA, pva = NA, type_imputation = FALSE)
 }
 \arguments{
 \item{TYPE}{(character) Pooling type. Defaults to "NONE"}

@@ -4,8 +4,8 @@
 \alias{get_stacked_data}
 \title{Simulate complete LPA data for simulation study}
 \usage{
-get_stacked_data(z, list_imputed, methods_list, pctmiss_vec, save_it = FALSE,
-  rep = NA, p = NA, temp_wd_p_vec = NULL)
+get_stacked_data(z, list_imputed, methods_list, pctmiss_vec,
+  save_it = FALSE, rep = NA, p = NA, temp_wd_p_vec = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}

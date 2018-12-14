@@ -4,9 +4,9 @@
 \alias{fit_til_convergence}
 \title{Fit mixture models in Mplus until convergence}
 \usage{
-fit_til_convergence(p, z, temp_wd_p_vec, target_wd, dff_target, pop_params_kk,
-  starts0 = 20, mX_max = 7, type_imputation = FALSE, m = NA,
-  readModels = FALSE, ...)
+fit_til_convergence(p, z, temp_wd_p_vec, target_wd, dff_target,
+  pop_params_kk, starts0 = 20, mX_max = 7, type_imputation = FALSE,
+  m = NA, readModels = FALSE, ...)
 }
 \arguments{
 \item{p}{Processor}

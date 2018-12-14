@@ -7,6 +7,7 @@ Depends: R (>= 3.0.1)
 Imports:
     abind (>= 1.4-5),
     Amelia (>= 1.7.5),
+    data.table (>= 1.11.4),
     designmatch (>= 0.3.0),
     doParallel (>= 1.0.11),
     doRNG (>= 1.7.1),
@@ -15,6 +16,7 @@ Imports:
     ggplot2 (>= 2.2.1),
     lavaan (>= 0.6-1),
     MASS (>= 7.3-49),
+    Matrix (>= 1.2-14),
     mclust (>= 5.4.1),
     mice (>= 2.46.0),
     miceadds (>= 2.10-14),
@@ -32,4 +34,4 @@ Imports:
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

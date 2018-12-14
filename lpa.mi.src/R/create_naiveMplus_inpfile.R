@@ -14,12 +14,13 @@
 #' @param symbol_txt ("character") Either "*" or the "(at)" symbol. The latter for fixing parameters.
 #' @param Model_txt (character vector). Defaults to NULL.
 #' @param weight (logical) Indicates if a sample weight is included as the last variable in the .dat files listed in dffolderfiles.
+#' @param output_txt (character) Text for Output block to be requested in addition to the default 'tech1;' and 'svalues;'
 #' @return Saves the Mplus input files for Naive LPA analysis in the the folders specified of dffolderfiles input. Returns a character vector with the the Mplus code.
 #' @export
 #' @examples
 #' create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p)
-#' 
-create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, estimates = FALSE, results = FALSE, save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*", Model_txt = NULL, weight = FALSE){
+#'
+create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, estimates = FALSE, results = FALSE, save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*", Model_txt = NULL, weight = FALSE, output_txt = NULL){
 
   #
   J = out_get_FMM$J
@@ -68,7 +69,7 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
         names_Xcom = ifelse(J_Xcom_z>0,  paste("Xcom", seq(1,J_Xcom_z), sep = ""), "")
         names_vec = c(paste("Y",seq(1,J_Y_z), sep = ""),
                       names_Xinc,
-                      names_Xcom, 
+                      names_Xcom,
                       "subpop")
         names_txt = names_vec[1]
         for(t in seq(2,length(names_vec))){
@@ -105,6 +106,7 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
             Analysis_txt = c("ANALYSIS: ",
                              "TYPE = MIXTURE;",
                              Estimator_txt,
+                             "INFORMATION = obs;",
                              paste("STARTS = ", starts_txt, sep = ""))
 
 
@@ -179,7 +181,8 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
           # Create the output
           Output_txt = c("OUTPUT:",
                          "tech1;",
-                         "svalues;")
+                         "svalues;",
+                         output_txt)
 
           # Put all the Mplus commands together into a single text vector
           mplus_txt = c(Title_txt, "\n",
