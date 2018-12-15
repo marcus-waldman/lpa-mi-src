@@ -12,9 +12,9 @@ library(devtools)
 # Big Bertha
   #dropbox="D:/Dropbox/Dropbox"
 # Queen Mary's Revenge
-  #dropbox = "D:/Dropbox"
+  dropbox = "D:/Dropbox"
 # Gaby
-  dropbox = "Z:/Dropbox" 
+  #dropbox = "Z:/Dropbox" 
 
 src_dir= paste(dropbox,"/Dissertation/lpa-mi-src", sep = "")
 #create("lpa.mi.src")
