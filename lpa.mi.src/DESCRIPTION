@@ -1,7 +1,7 @@
 Package: lpa.mi.src
 Title: Functions for multiple imputation in Latent Profile Analysis simulations.
 Version: 0.0.1
-Authors: Marcus Waldman <marcus_waldman@gse.harvard.edu>
+Authors: Marcus R. Waldman <marcus_waldman@gse.harvard.edu>
 Description: The package contains a collection of functions to implement a simulation study looking at muliple imputation methods for Latent Profile Analsys.
 Depends: R (>= 3.0.1)
 Imports:
