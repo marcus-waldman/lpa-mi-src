@@ -4,10 +4,12 @@
 \alias{nuke_dirs}
 \title{Permanently remove folers and subfolders}
 \usage{
-nuke_dirs(directories)
+nuke_dirs(directories, ...)
 }
 \arguments{
 \item{directories}{(vector) Character strings of directories}
+
+\item{...}{other arguments passed to the unlink() function.}
 }
 \description{
 Permanently remove folers and subfolders

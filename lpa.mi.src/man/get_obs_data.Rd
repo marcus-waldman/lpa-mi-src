@@ -4,8 +4,8 @@
 \alias{get_obs_data}
 \title{Apply missing data mechanism to simulate observed LPA indicator data}
 \usage{
-get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA, p = NA,
-  save_it = FALSE, temp_wd_p_vec = NULL)
+get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA,
+  save_it = FALSE, temp_wd_rep_vec = NULL, pm_vec = NA)
 }
 \arguments{
 \item{z}{(integer) condition identifier (number) for the complete data (as specified by data_conditions)}
@@ -18,11 +18,11 @@ get_obs_data(z, df, pctmiss_vec, data_conditions, rep = NA, p = NA,
 
 \item{rep}{(integer) Replication number (defaults to 1).}
 
-\item{p}{(integer) Processor number (defaults to 1).}
+\item{save_it}{(logical) if TRUE, then it saves the data set (i) temp_wd_rep_vec & (ii) rep also must be specificed}
 
-\item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
+\item{temp_wd_rep_vec}{(character vector). Required if save_it==TRUE. Replication-specific temporary directory}
 
-\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
+\item{pm_vec}{(integer) giving the correpsonding the percent missing condition. If NA, then defaults to 1:length(pctmiss_vec)}
 }
 \value{
 out_list  (list) with the following elements:

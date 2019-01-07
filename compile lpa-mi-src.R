@@ -7,14 +7,14 @@ remove.packages("lpa.mi.src")
 library(roxygen2)
 library(devtools)
 
-# Acer-Laptop
+# #Acer-Laptop
   #dropbox = "C:/Users/marcu/Dropbox"
 # Big Bertha
   #dropbox="D:/Dropbox/Dropbox"
 # Queen Mary's Revenge
-  dropbox = "D:/Dropbox"
+  #dropbox = "D:/Dropbox"
 # Gaby
-  #dropbox = "Z:/Dropbox" 
+  dropbox = "D:/Dropbox" 
 
 src_dir= paste(dropbox,"/Dissertation/lpa-mi-src", sep = "")
 #create("lpa.mi.src")
@@ -23,7 +23,7 @@ setwd("lpa.mi.src")
 document()
 
 setwd(src_dir)
-install("lpa.mi.src")
+install("lpa.mi.src", upgrade = FALSE)
 
 rm(list = ls())
 

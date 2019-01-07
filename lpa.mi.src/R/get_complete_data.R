@@ -4,42 +4,42 @@
 #' @param z (integer) condition identifier for the complete data (as specified by data_conditions)
 #' @param data_conditions (data.frame) simulation conditions pertaining to the complete data
 #' @param rep (integer) Replication number (defaults to 1).
-#' @param p (integer) Processor number (defaults to 1).
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
-#' @param temp_wd_p_vec (character vector). Required if save_it==TRUE.  processor-specific temporary directory
+#' @param temp_wd_rep_vec (character vector). Required if save_it==TRUE.  processor-specific temporary directory
 #' @return out_list  (list) with the following elements
 #'       (A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 #'       (B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
 #'       (C) S - (J-by-J-by-K array) for the k-th class's covariance matrix
-#'       (D) pi - (vector) with K elements. marginal probabilties for the k-th class 
-#'       (E) dffolderfiles (data.frame) with the files and folders of the saved data 
+#'       (D) pi - (vector) with K elements. marginal probabilties for the k-th class
+#'       (E) dffolderfiles (data.frame) with the files and folders of the saved data
 #' @export
 #' @examples
 #' get_complete_data(z,data_conditions,save_it = FALSE)
 
-get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE, temp_wd_p_vec = NULL){
-  
+get_complete_data<-function(z,data_conditions, rep = NA, save_it = FALSE, temp_wd_rep_vec = NULL){
+
 #Stuff for error diagnosing:
 # rep = 1
 # z = 1
 # save_it = TRUE
-# p = 1
 
-  
-      temp_wd_p =temp_wd_p_vec[p]
 
-      require(MASS)
 
-      if (save_it == TRUE){require(MplusAutomation)}      
-      if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_p) | is.na(p))){
-        stop("rep, p, & temp_wd_p arguments cannot be NA or NULL with save_it = TRUE")
-      }  
-      
-      # Get population-level parameters for the mixture model 
-      out_get_FMM<-get_FMM_params(z,data_conditions)
+      temp_wd_rep_z = paste0(temp_wd_rep_vec[rep],"/z",z)
+
+      require(MASS); require(psych)
+
+      if (save_it == TRUE){require(MplusAutomation)}
+      if(save_it == TRUE & (is.na(rep) | is.null(temp_wd_rep_z) | is.na(rep))){
+        stop("rep & temp_wd_rep_z arguments cannot be NA or NULL with save_it = TRUE")
+      }
+
+      # Get population-level parameters for the mixture model
+      out_get_FMM<-get_FMM_params(z=z,data_conditions=data_conditions)
       mu_z = out_get_FMM$mu_z; S_z = out_get_FMM$S_z; pi_z = out_get_FMM$pi_z; K_z = out_get_FMM$K_z
       J_Y_z = out_get_FMM$J_Y_z; J_Xinc_z = out_get_FMM$J_Xinc_z; J_Xcom_z = out_get_FMM$J_Xcom_z
-      J = out_get_FMM$J; MD_z = out_get_FMM$MD_z; rho_YX_z = out_get_FMM$rho_YX_z
+      J = out_get_FMM$J; MD_z = out_get_FMM$MD_z;
+      rho_YX_z = out_get_FMM$rho_YX_z; dX_z = out_get_FMM$dX_z
 
       # Generate latent classe memberships
       N_z = data_conditions$N[z]
@@ -61,8 +61,8 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
         rm(draws); rm(ii)
         class_z = sort(class_z)
       }
-      
-      
+
+
       # Generate the complete data
       dfcom_z = data.frame(mat.or.vec(nr = N_z, nc = J)+NA)
       names(dfcom_z)[1:J_Y_z] = paste("Y",1:J_Y_z, sep = "")
@@ -77,25 +77,37 @@ get_complete_data<-function(z,data_conditions, rep = NA, p = NA, save_it = FALSE
       }
       dfcom_z = transform(dfcom_z, rep = rep, data_condition = z)
 
-      # Create the out_list for return and save, if needed
-      out_list = list(dfcom = dfcom_z, mu = mu_z, S = S_z, pi = pi_z, dffolderfiles = NULL)
-      
-      if (save_it == TRUE){
-          out_list$dffolderfiles = data.frame(folders = "Complete data", 
-                                     files = paste("dfcom p", p," z",z," rep",rep, ".dat",sep = ""), 
-                                     data_condition = z, m = NA)
-          
-          # save(dfcom_z,
-          #      file = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".RData",sep = ""))
-          
-
-            nms = names(dfcom_z)
-            jkeep = which(startsWith(nms,"Y") | startsWith(nms,"X") | nms=="subpop")
-            prepareMplusData(dfcom_z, keepCols = jkeep,
-                             filename = paste(temp_wd_p,"/Complete data/dfcom p", p," z",z," rep",rep, ".dat",sep = ""), 
-                             inpfile = FALSE, 
-                             overwrite = TRUE)
+      # Do descriptive statistics
+      univariates_z = describeBy(dfcom_z[,seq(1,J+1)], group = "subpop", fast = TRUE)
+      bivariates_z = list(NULL)
+      for (k in 1:K_z){
+        tmp = subset(dfcom_z, subpop == k)
+        bivariates_z[[k]] = cor(tmp[,1:J])
       }
-      
+      descriptives_z = list(univariates = univariates_z, bivariates = bivariates_z)
+
+      # Create the out_list for return and save, if needed
+      out_list = list(dfcom = dfcom_z, mu = mu_z, S = S_z, pi = pi_z, dffolderfiles = NULL,
+                      descriptives = descriptives_z)
+
+      if (save_it == TRUE){
+
+        dat_folder ="Complete data"
+        dat_fname = paste0("dfcom rep", rep , " z", z,".dat")
+
+        out_list$dffolderfiles = data.frame(rep = rep, z = z,
+                                            folders = paste0("rep",rep,"/z",z,"/",dat_folder),
+                                            files = dat_fname,
+                                            pm = NA, pva = NA, m = NA)
+
+
+        # Save a ".dat" file for Mplus
+        nms = names(dfcom_z)
+        jkeep = which(startsWith(nms,"Y") | startsWith(nms,"X") | nms=="subpop")
+        prepareMplusData(dfcom_z, keepCols = jkeep,
+                         filename = paste(temp_wd_rep_z,dat_folder,dat_fname, sep = "/"), inpfile = FALSE,
+                         overwrite = TRUE)
+      }
+
       return(out_list)
 }

@@ -23,6 +23,7 @@ out_list  (list) with the following elements:
        (H) J - - (integer) specifying the total number of variables in the joint distribution in z-th data condition
        (I) MD_z - (numeric) specifying the class separation in z-th data condition
        (J) rho_YX_z - - (numeric) specifying the missing data correlates correlation in z-th data condition
+       (k) dX_z -- (logical) specifying whether between-class mean differences exist in the missing data correlate
 }
 \description{
 Obtain the population parameters given the data

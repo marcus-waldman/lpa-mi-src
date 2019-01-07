@@ -14,6 +14,7 @@
 #'        (H) J - - (integer) specifying the total number of variables in the joint distribution in z-th data condition
 #'        (I) MD_z - (numeric) specifying the class separation in z-th data condition
 #'        (J) rho_YX_z - - (numeric) specifying the missing data correlates correlation in z-th data condition
+#'        (k) dX_z -- (logical) specifying whether between-class mean differences exist in the missing data correlate
 #' @export
 #' @examples
 #' get_FMM_params(z,data_conditions)
@@ -50,6 +51,9 @@ get_FMM_params<-function(z,data_conditions){
       if (C_modifies_YX_z==TRUE){ kvec_rho_YX=seq(-1*rho_YX_z,rho_YX_z,len = K_z) }
       if (C_modifies_YX_z==FALSE){ kvec_rho_YX=rep(rho_YX_z, K_z) }
       
+      # Get whether class-specific differences occurs in the auxiliary variables
+      dX_z = data_conditions$dX[z]
+      
       #Ensure that t_rotate is specified
       if ("t_rotate" %in% names(data_conditions) == FALSE){
         stop("t_rotate must be a variable in data_conditions")
@@ -63,6 +67,9 @@ get_FMM_params<-function(z,data_conditions){
       
       # Mean vecotrs of the covariates
       mu_X_z = mat.or.vec(nr = J_Xcom_z + J_Xinc_z, nc = K_z)
+      if (dX_z == TRUE){
+        mu_X_z[,seq(1,K_z-1,by=1)] = seq(-0.5,0.5,len = K_z-1)
+      }
       
       #Combine the covariate and indicator column vectors
       mu_z = rbind(mu_Y_z, mu_X_z)
@@ -73,10 +80,6 @@ get_FMM_params<-function(z,data_conditions){
         S_z[1:J,1:J,k] = diag(J)
         S_z[1:J_Y_z,-seq(1,J_Y_z),k] <- S_z[-seq(1,J_Y_z),1:J_Y_z,k] <- kvec_rho_YX[k]
       }
-  
-    
-      
-      
       
        # Create the out list
       out_list = list(mu_z = mu_z, 
@@ -88,7 +91,8 @@ get_FMM_params<-function(z,data_conditions){
                       J_Xcom_z = J_Xcom_z,
                       J = J,
                       MD_z = MD_z,
-                      rho_YX_z = rho_YX_z)
+                      rho_YX_z = rho_YX_z, 
+                      dX_z = dX_z)
       
       return(out_list)
       

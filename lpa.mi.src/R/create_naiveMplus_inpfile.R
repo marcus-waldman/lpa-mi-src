@@ -15,12 +15,13 @@
 #' @param Model_txt (character vector). Defaults to NULL.
 #' @param weight (logical) Indicates if a sample weight is included as the last variable in the .dat files listed in dffolderfiles.
 #' @param output_txt (character) Text for Output block to be requested in addition to the default 'tech1;' and 'svalues;'
+#' @param processor_cores (integer) Number of processor cores to use.
 #' @return Saves the Mplus input files for Naive LPA analysis in the the folders specified of dffolderfiles input. Returns a character vector with the the Mplus code.
 #' @export
 #' @examples
 #' create_naiveMplus_inpfile(z, data_conditions, dffolderfiles, temp_wd_p)
 #'
-create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, estimates = FALSE, results = FALSE, save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*", Model_txt = NULL, weight = FALSE, output_txt = NULL){
+create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, savedata = FALSE, estimates = FALSE, results = FALSE, save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;", symbol_txt = "*", Model_txt = NULL, weight = FALSE, output_txt = NULL, processor_cores = 1){
 
   #
   J = out_get_FMM$J
@@ -107,7 +108,8 @@ create_naiveMplus_inpfile<-function(z, out_get_FMM, dffolderfiles, temp_wd_p, sa
                              "TYPE = MIXTURE;",
                              Estimator_txt,
                              "INFORMATION = obs;",
-                             paste("STARTS = ", starts_txt, sep = ""))
+                             paste("STARTS = ", starts_txt, sep = ""),
+                             paste0("PROCESSORS = ", processor_cores,";"))
 
 
     #### Model Command ####

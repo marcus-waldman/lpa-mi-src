@@ -8,7 +8,7 @@ create_naiveMplus_inpfile(z, out_get_FMM, dffolderfiles, temp_wd_p,
   savedata = FALSE, estimates = FALSE, results = FALSE,
   save_tech3 = FALSE, type_imputation = FALSE, starts_txt = "0;",
   symbol_txt = "*", Model_txt = NULL, weight = FALSE,
-  output_txt = NULL)
+  output_txt = NULL, processor_cores = 1)
 }
 \arguments{
 \item{z}{(integer) Condition number}
@@ -38,6 +38,8 @@ create_naiveMplus_inpfile(z, out_get_FMM, dffolderfiles, temp_wd_p,
 \item{weight}{(logical) Indicates if a sample weight is included as the last variable in the .dat files listed in dffolderfiles.}
 
 \item{output_txt}{(character) Text for Output block to be requested in addition to the default 'tech1;' and 'svalues;'}
+
+\item{processor_cores}{(integer) Number of processor cores to use.}
 }
 \value{
 Saves the Mplus input files for Naive LPA analysis in the the folders specified of dffolderfiles input. Returns a character vector with the the Mplus code.

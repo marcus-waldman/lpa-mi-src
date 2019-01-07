@@ -22,7 +22,7 @@
 fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_params_kk,
                               starts0 = 20, mX_max = 7, type_imputation = FALSE, m = NA, readModels = FALSE, ...){
 
-
+    require(MplusAutomation)
     if(starts0%%10 != 0){error("starts0 needs to be a multiple of 10")}
 
     mX = -1;
@@ -79,6 +79,15 @@ fit_til_convergence<-function(p, z, temp_wd_p_vec, target_wd, dff_target, pop_pa
                     Starts = starts0*2^(mX),
                     problem = problem,
                     model_txt = c("MODEL: \n", svals_txt),
-                    out_readModels = out_readModels)
+                    out_readModels = out_readModels, 
+                    z = z, out_get_FMM = pop_params_kk,
+                    dffolderfiles = dff_target, 
+                    temp_wd_p = temp_wd_p_vec[p],
+                    starts_txt = starts_txt, 
+                    type_imputation = type_imputation, 
+                    target_wd = target_wd,
+                    pattern_inp = pattern_inp, 
+                    pattern_out = pattern_out
+                ) #end list()
     return(out_list)
 }

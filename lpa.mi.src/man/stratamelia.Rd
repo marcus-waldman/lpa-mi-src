@@ -4,7 +4,7 @@
 \alias{stratamelia}
 \title{Stratified Amelia Imputation}
 \usage{
-stratamelia(x, strata, m, ...)
+stratamelia(x, strata, m, empri = NULL, ...)
 }
 \arguments{
 \item{x}{(data.frame) Incomplete data set}

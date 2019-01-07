@@ -5,8 +5,8 @@
 \title{Obtain (multiply) imputed datasets}
 \usage{
 get_imputed_data(z, list_get_obs, list_get_complete, methods_list,
-  data_conditions, pctmiss_vec, rep = NA, p = NA, save_it = FALSE,
-  temp_wd_p_vec = NULL, ...)
+  data_conditions, pctmiss_vec, rep = NA, save_it = FALSE,
+  temp_wd_rep_vec = NULL, pm_vec = NA, ...)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}
@@ -25,11 +25,11 @@ A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 
 \item{rep}{(integer) Replication number (defaults to 1).}
 
-\item{p}{(integer) Processor number (defaults to 1).}
-
 \item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
 
-\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
+\item{temp_wd_rep_vec}{(character vector). Required if save_it==TRUE. Replication-specific temporary directory}
+
+\item{pm_vec}{(integer) giving the correpsonding the percent missing condition. If NA, then defaults to 1:length(pctmiss_vec)}
 
 \item{...}{Additional arguments to the imputation function}
 

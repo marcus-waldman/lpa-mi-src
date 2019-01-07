@@ -27,7 +27,14 @@ fit_and_do_rubinrules(dff_imputed, methods_list, pop_params_z,
 \item{pva}{(integer)}
 }
 \value{
-(list) out_list with (a) parameters, (b) ARIV, (c) Vtot, (B)
+(list) out_list with:
+              (a) problem - (logical) indicating if less than minimum imputations converged
+              (b) MM_pva - (integer) Number of imputation draws that converged
+              (c) parameters - (data.frame) Pooled parameters in MplusAutomation format
+              (d) Vtot - (matrix) Pooled variance taking into account within- (Vbar) & between- (B) imputation variances
+              (e) Vbar - (matrix) Within imptuation variance
+              (f) B - (matrix) Between imputation variance V_m_list,
+              (g) theta_m_list - (list) with individual imputation point estimates (as a vector)
 }
 \description{
 Fit mixture model to multiply imputed data and pool using Rubin's Rules (1987)

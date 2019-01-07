@@ -4,8 +4,8 @@
 \alias{get_complete_data}
 \title{Simulate complete LPA data for simulation study}
 \usage{
-get_complete_data(z, data_conditions, rep = NA, p = NA,
-  save_it = FALSE, temp_wd_p_vec = NULL)
+get_complete_data(z, data_conditions, rep = NA, save_it = FALSE,
+  temp_wd_rep_vec = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}
@@ -14,18 +14,16 @@ get_complete_data(z, data_conditions, rep = NA, p = NA,
 
 \item{rep}{(integer) Replication number (defaults to 1).}
 
-\item{p}{(integer) Processor number (defaults to 1).}
-
 \item{save_it}{(logical) if TRUE, then it saves the data set and the following also must be specificed}
 
-\item{temp_wd_p_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
+\item{temp_wd_rep_vec}{(character vector). Required if save_it==TRUE.  processor-specific temporary directory}
 }
 \value{
 out_list  (list) with the following elements
       (A) dfcom - (data.frame) complete data corresponding to the z-th condition number
       (B) mu - (J-by-K matrix) with the means for the j-th variable in the k-th class.
       (C) S - (J-by-J-by-K array) for the k-th class's covariance matrix
-      (D) pi - (vector) with K elements. marginal probabilties for the k-th class 
+      (D) pi - (vector) with K elements. marginal probabilties for the k-th class
       (E) dffolderfiles (data.frame) with the files and folders of the saved data
 }
 \description{

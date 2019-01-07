@@ -37,8 +37,8 @@ Mplus2Qlist<-function(params_df){
       }
     }
     for(k in 1:K){
-      for (j1 in seq(1,K-1)){
-        for (j2 in seq(j1+1, K)){
+      for (j1 in seq(1,J-1)){
+        for (j2 in seq(j1+1, J)){
           inds_j1j2k = with(params_df, which(paramHeader == paste0("Y",j1,".WITH") & param == paste0("Y",j2) & LatentClass == paste0(k)))
           S_array[j1,j2,k] <- S_array[j2,j1,k] <- params_df$est[inds_j1j2k]
         }

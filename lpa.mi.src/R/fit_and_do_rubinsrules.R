@@ -9,7 +9,15 @@
 #' @param z (integer)
 #' @param pm (integer)
 #' @param pva (integer)
-#' @return (list) out_list with (a) parameters, (b) ARIV, (c) Vtot, (B)
+#' @return (list) out_list with:
+#'               (a) problem - (logical) indicating if less than minimum imputations converged
+#'               (b) MM_pva - (integer) Number of imputation draws that converged
+#'               (c) parameters - (data.frame) Pooled parameters in MplusAutomation format
+#'               (d) Vtot - (matrix) Pooled variance taking into account within- (Vbar) & between- (B) imputation variances
+#'               (e) Vbar - (matrix) Within imptuation variance
+#'               (f) B - (matrix) Between imputation variance V_m_list,
+#'               (g) theta_m_list - (list) with individual imputation point estimates (as a vector)
+#                (h) params_m_list - list with data frames for parameter estimates, SEs, p-values in MplusAutomation format
 #' @export
 #' @examples
 #' fit_and_do_rubinrules(dff_imputed, methods_list, pop_params_z, data_conditions, temp_wd_p_vec, p, z, pm, pva)
@@ -21,8 +29,10 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
     require(Matrix)
     require(abind)
     require(data.table)
+    require(MplusAutomation)
 
     M_pva = methods_list$args[[pva]]$m
+    list_summaries_m = list(NULL)
     list_V_m = list(NULL)     #Q-by-Q-by_M_pva with within imputation asympototic covariance
     list_theta_m = list(NULL) #Q-by-M_pva with parameter column vectors
     list_params = list(NULL)
@@ -36,50 +46,39 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
                                       target_wd = paste0(temp_wd_p_vec[p], "/Imputed data/pm",pm,"/pva",pva),
                                       pop_params_kk = pop_params_z,
                                       type_imputation = FALSE, m = m,
-                                      readModels = TRUE, savedata = FALSE, output_txt = "tech3;")
-
+                                      readModels = TRUE, savedata = TRUE, output_txt = "tech3")
 
       if (out_ftc_m$problem == FALSE & out_ftc_m$Rcond > 1E-8){
 
-
+          
           mm = mm+1
+          
+          # Deal with class switching
+          switched_ftc_m = resolve_label_switch(out_ftc = out_ftc_m, output_txt = "tech3")
 
           # Obtain TECH1  parameter and create placeholder for tech1_switched_m
-          tech1_m = get_tech1(out_readModels = out_ftc_m$out_readModels ); names(tech1_m)[names(tech1_m) == "tech1"] = "tech1_from"
-          tech1_switched_m = tech1_m; names(tech1_switched_m)[names(tech1_switched_m) == "tech1_from"] = "tech1_to"
-
+          tech1_m = get_tech1(out_readModels = switched_ftc_m$out_readModels )
+          
           # Obtain Model parameters and merge TECH1 (tech1_from) information
-          params_m = out_ftc_m$out_readModels$parameters$unstandardized
-          params_m = merge(params_m, tech1_m, by = c("paramHeader", "param", "LatentClass"), sort = FALSE)
-
-          # ODeal with label switching using the KL divergence discrepancy
-          DMAT_m = get_KL_DMAT(params = params_m,
-                               z = z,
-                               data_conditions = data_conditions)
-          out_switch = resolve_label_switch(mu_est_mat = NULL, S_est_array = NULL, z = z, data_conditions = data_conditions,
-                                            parameters_df = params_m,
-                                            DMAT = DMAT_m)
-          params_switch_m = out_switch$parameters_df
-
-          # Add in the TECH1 (tech1_to) information
-          params_switch_m = merge(params_switch_m, tech1_switched_m, by = c("paramHeader", "param", "LatentClass"), sort = FALSE)
-          params_switch_m = subset(params_switch_m, !is.na(tech1_from)) %>% arrange(tech1_from)
+          params_m = switched_ftc_m$out_readModels$parameters$unstandardized %>%
+                     merge(tech1_m, by = c("paramHeader", "param", "LatentClass"), sort = FALSE) %>% 
+                     subset(!is.na(tech1))
 
           # Obtain within-imputation asymptotic covariance and deal with label switching
-          hi = out_ftc_m$out_readModels$tech3$paramCov; hi[is.na(hi)] = 0
+          hi = switched_ftc_m$out_readModels$tech3$paramCov; hi[is.na(hi)] = 0
           thi = t(hi); diag(thi) = 0;
           V_m = hi+thi
-          params_switch_m = params_switch_m %>% arrange(tech1_to)
-          V_m_switched = V_m[params_switch_m$tech1_from, params_switch_m$tech1_from]
-
 
           # Save parameters and asympoptotic covariance estimates in a matrix
-          list_params[[mm]] = params_switch_m
-          list_V_m[[mm]] = as.matrix(V_m_switched) #Q-by-Q-by_M_pva with within imputation asympototic covariance
-          list_theta_m[[mm]] = params_switch_m$est #Q-by-M_pva with parameter column vectors
+          list_params[[mm]] = params_m
+          list_V_m[[mm]] = as.matrix(V_m) #Q-by-Q-by_M_pva with within imputation asympototic covariance
+          list_theta_m[[mm]] = params_m$est #Q-by-M_pva with parameter column vectors
 
+          # Save the summaries
+          list_summaries_m[[mm]] = out_ftc_m$out_readModels$summaries
+          
 
-      } # end if out_ftc_com$problem == FALSE
+      }# end if out_ftc_com$problem == FALSE
 
     } # end for m
 
@@ -117,9 +116,9 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
       ARIV = (1+1/M_pva)*trBV/Q
 
 
-      Vtot = Vbar + (1+1/MM_pva)*B
+      Vtot = Vbar + B + B/MM_pva
 
-      parameters_df = params_switch_m[,c("paramHeader","param","LatentClass")] %>%
+      parameters_df = params_m[,c("paramHeader","param","LatentClass")] %>%
                         transform(est = t_bar, se = sqrt(diag(Vtot))) %>%
                         transform(est_se = est/se) %>%
                         transform(pval = 1-pnorm(abs(est_se)))
@@ -128,28 +127,28 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
       out_list = list(problem = FALSE,
                       MM_pva = MM_pva,
                       parameters = parameters_df,
-                      ARIV = ARIV,
                       Vtot = Vtot,
                       Vbar = Vbar,
                       B = B,
                       V_m_list = list_V_m,
                       theta_m_list = list_theta_m,
-                      params_m_list = list_params)
+                      params_m_list = list_params,
+                      summaries_m_list = list_summaries_m)
 
   } else {
     warning("Total imputated data sets that converged was less than 5.")
     out_list = list(problem = TRUE,
                     MM_pva = MM_pva,
                     parameters = NULL,
-                    ARIV = NULL,
                     Vtot = NULL,
                     Vbar = NULL,
                     B = NULL,
                     V_m_list = NULL,
                     theta_m_list = NULL,
-                    params_m_list = NULL)
+                    params_m_list = NULL, 
+                    summaries_m_list = NULL)
 
-  }
+  } # end if if (MM_pva>5)
 
   #print("line 124")
       return(out_list)

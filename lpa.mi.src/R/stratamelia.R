@@ -3,24 +3,27 @@
 #' This function obtain imputations using Amelia, stratified by observed group membership
 #' @param x (data.frame) Incomplete data set
 #' @param strata  (vector of integers) Group membership indicator
-#' @param ... additional arguments passed to the amelia function 
+#' @param ... additional arguments passed to the amelia function
 #' @return out_list (list) with each element being an imputed data set.
 #' @export
 #' @examples
 #' stratamelia(x, strata, m = 1)
 
 
-stratamelia<-function(x,strata,m,...){
+stratamelia<-function(x,strata,m,empri=NULL,...){
 
   require(Amelia)
 
-  
+
   imparray = array(NA, dim = c(nrow(x), ncol(x), m))
-  
+
   for (k in unique(strata)){
     inds_k = which(strata == k)
     x_k = x[inds_k, ]
     args_k = list(x = x_k, m = m, ...)
+    if(!is.null(empri)){
+      args_k$empri = empri*nrow(x_k)
+    }
 #args_k = list(x = x_k, m = m)
     obj_k = do.call("amelia", args_k)
     imparray[inds_k,,] = array(unlist(obj_k$imputation), dim = c(nrow(x_k), ncol(x_k), m))
@@ -34,7 +37,7 @@ stratamelia<-function(x,strata,m,...){
     longimp_df = rbind(longimp_df, tmp_df)
   }
   mids_obj = as.mids(longimp_df)
-  
+
   return(mids_obj)
 
 }

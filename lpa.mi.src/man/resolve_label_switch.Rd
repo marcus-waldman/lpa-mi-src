@@ -4,32 +4,23 @@
 \alias{resolve_label_switch}
 \title{Resolve label switching with population values known.}
 \usage{
-resolve_label_switch(mu_est_mat, S_est_array, z, data_conditions,
-  parameters_df = NULL, DMAT = NULL, name = "glpk", t_max = 30,
-  approximate = 0, round_cplex = 0, trace_cplex = 0)
+resolve_label_switch(out_ftc, name = "glpk", t_max = 30,
+  approximate = 0, round_cplex = 0, trace_cplex = 0, ...)
 }
 \arguments{
-\item{mu_est_mat}{(matrix)}
-
-\item{S_est_array}{(array)}
-
-\item{z}{(integer)}
-
-\item{data_conditions}{(data.frame)}
-
-\item{parameters_df}{(data.frame) Defaults to Null. If non-Null, switches the labels in the data frame.}
-
-\item{DMAT}{(matrix) Optional. A supplied K-by-K distance matrix. If not supplied, then one is calculated using the KL-Divergences.}
+\item{out_ftc}{(list) An object from fit_til_convergence.}
 
 \item{name}{(character) Defaults to "glpk"}
 
-\item{t_max}{(integer)}
+\item{t_max}{(integer) Maximum time for estimation using "glpk". Defaults to 30 sec.}
 
-\item{approximate}{(integer)}
+\item{approximate}{(integer) Allow for approximate solution. Defauts to 0 (i.e., FALSE)}
 
 \item{round_cplex}{(integer)}
 
 \item{trace_cplex}{(integer)}
+
+\item{...}{Other arguments to send to create_naiveMplus_inpfile()}
 }
 \value{
 (list) A list with the following things:
@@ -37,7 +28,7 @@ resolve_label_switch(mu_est_mat, S_est_array, z, data_conditions,
           (b) map_from - (vector) always just 1:K showing class definitions from sample
           (c) map_to - (NULL or vector) same as map_from if no class switching.
                      Otherwise it is the corresponding population-based classes from sample classes
-          (d) parameters_df (data.frame). Only included if parameters_df input is non-null. Same as input, except labels are switch.
+          (d) out_Mplus- (list) readModels() fitting model with starting values that resolve class switching
 }
 \description{
 Resolve label switching with population values known.
