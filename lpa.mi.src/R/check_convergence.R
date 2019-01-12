@@ -15,9 +15,9 @@ check_convergence<-function(file, folder_wd = getwd(), starts_txt = "0;", type_i
 #folder_wd = "C:/Users/marcu/Dropbox/Dissertation Proposal/Paper 1/Simulation Code/Impute LPA Sim - known K -  v1_0/Error diagnosis/p1/Complete data"
 #file = "Naive dfcom p1 z1 rep15 v2.out"
 
-    setwd(folder_wd)
+    #setwd(folder_wd)
 
-    hi = readLines(con = file)
+    hi = readLines(con = paste0(folder_wd, "/",file))
     i_0 = which(hi ==  "THE MODEL ESTIMATION TERMINATED NORMALLY" )
     i_1 = which(hi ==  "THE BEST LOGLIKELIHOOD VALUE HAS BEEN REPLICATED.  RERUN WITH AT LEAST TWICE THE" )
 

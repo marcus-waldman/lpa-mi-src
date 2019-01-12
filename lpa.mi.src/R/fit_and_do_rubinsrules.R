@@ -50,18 +50,18 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
 
       if (out_ftc_m$problem == FALSE & out_ftc_m$Rcond > 1E-8){
 
-          
+
           mm = mm+1
-          
+
           # Deal with class switching
           switched_ftc_m = resolve_label_switch(out_ftc = out_ftc_m, output_txt = "tech3")
 
           # Obtain TECH1  parameter and create placeholder for tech1_switched_m
           tech1_m = get_tech1(out_readModels = switched_ftc_m$out_readModels )
-          
+
           # Obtain Model parameters and merge TECH1 (tech1_from) information
           params_m = switched_ftc_m$out_readModels$parameters$unstandardized %>%
-                     merge(tech1_m, by = c("paramHeader", "param", "LatentClass"), sort = FALSE) %>% 
+                     merge(tech1_m, by = c("paramHeader", "param", "LatentClass"), sort = FALSE) %>%
                      subset(!is.na(tech1))
 
           # Obtain within-imputation asymptotic covariance and deal with label switching
@@ -74,9 +74,9 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
           list_V_m[[mm]] = as.matrix(V_m) #Q-by-Q-by_M_pva with within imputation asympototic covariance
           list_theta_m[[mm]] = params_m$est #Q-by-M_pva with parameter column vectors
 
-          # Save the summaries
+        # Save the summaries
           list_summaries_m[[mm]] = out_ftc_m$out_readModels$summaries
-          
+
 
       }# end if out_ftc_com$problem == FALSE
 
@@ -145,7 +145,7 @@ fit_and_do_rubinrules<-function(dff_imputed, methods_list, pop_params_z,
                     B = NULL,
                     V_m_list = NULL,
                     theta_m_list = NULL,
-                    params_m_list = NULL, 
+                    params_m_list = NULL,
                     summaries_m_list = NULL)
 
   } # end if if (MM_pva>5)

@@ -9,10 +9,13 @@
 
 Mplus2Qlist<-function(params_df){
 
+  require(stringr)
+
     K = max(as.numeric(subset(params_df, LatentClass !=  "Categorical.Latent.Variables")$LatentClass))
     J = length(subset(params_df, paramHeader == "Means" & LatentClass == "1")$est)
-
     Q = list(pi = NULL, mu = NULL, S = NULL)
+
+    names_vec = subset(params_df, paramHeader == "Means" & LatentClass == 1)$param
 
 
     # Get mixing proportions
@@ -32,18 +35,22 @@ Mplus2Qlist<-function(params_df){
     S_array = array(dim = c(J,J,K))
     for (k in 1:K){
       for (j in 1:J){
-        inds_jk = with(params_df, which(paramHeader == "Variances" & LatentClass == paste0(k) & param == paste0("Y",j)))
+        inds_jk = with(params_df, which(paramHeader == "Variances" & LatentClass == k & param == names_vec[j]))
         S_array[j,j,k] = params_df$est[inds_jk]
       }
     }
-    for(k in 1:K){
-      for (j1 in seq(1,J-1)){
-        for (j2 in seq(j1+1, J)){
-          inds_j1j2k = with(params_df, which(paramHeader == paste0("Y",j1,".WITH") & param == paste0("Y",j2) & LatentClass == paste0(k)))
-          S_array[j1,j2,k] <- S_array[j2,j1,k] <- params_df$est[inds_j1j2k]
-        }
+
+    idx_cov = which(str_detect(string = params_df$paramHeader, ".WITH"))
+    if (length(idx_cov)>0){
+      cov_df = params_df[idx_cov, ]
+      var_x = as.character(str_split(cov_df$paramHeader, pattern = ".WITH", simplify = TRUE)[,1])
+      var_y = cov_df$param
+      cov_df = transform(cov_df, k = as.numeric(LatentClass), j1 = match(var_x, names_vec), j2 = match(var_y, names_vec))
+      for(ii in 1:nrow(cov_df)){
+        S_array[cov_df$j1[ii], cov_df$j2[ii], cov_df$k[ii]] <- S_array[cov_df$j2[ii], cov_df$j1[ii], cov_df$k[ii]]<- cov_df$est[ii]
       }
     }
+    S_array[is.na(S_array)] = 0
     Q$S = S_array
 
     return(Q)
