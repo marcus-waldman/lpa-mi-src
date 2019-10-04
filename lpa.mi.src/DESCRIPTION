@@ -8,8 +8,10 @@ Imports:
     abind (>= 1.4-5),
     Amelia (>= 1.7.5),
     data.table (>= 1.11.4),
+    designmatch (>= 0.3.0),
     doParallel (>= 1.0.11),
     doRNG (>= 1.7.1),
+    doSNOW(>= 1.0.16),
     fastDummies (>= 1.2.0),
     foreach (>= 1.4.4),
     gaussDiff(>= 1.1),
@@ -19,12 +21,15 @@ Imports:
     lavaan (>= 0.6-1),
     MASS (>= 7.3-49),
     Matrix (>= 1.2-14),
+    matrixcalc (>= 1.0-3),
     mclust (>= 5.4.1),
     mice (>= 2.46.0),
     miceadds (>= 2.10-14),
     mitools (>= 2.3), 
     mixtools (>= 1.1.0),
     MplusAutomation (>= 0.7-2),
+    pbapply (>= 1.3-4),
+    pkgmaker (>= 0.27),
     plyr (>= 1.8.4),
     pracma (>= 2.2.2),
     psych (>= 1.8.4),
@@ -33,11 +38,12 @@ Imports:
     Rfast (>= 1.9.2),
     semTools (>= 0.5-0),
     simsalapar (>= 1.0-10),
+    snow (>= 0.4-3),
     stats (>= 3.5.0), 
     stringr (>= 1.3.1),
     tidyverse (>= 1.2.1)
-Suggests:
-    designmatch (>= 0.3.0)
+Suggests: 
+    dynr(>= 0.1.13-4)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
