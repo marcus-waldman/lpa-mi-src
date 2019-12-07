@@ -4,12 +4,14 @@
 \alias{extract_svals}
 \title{Extract starting values from Mplus .out file.}
 \usage{
-extract_svals(file, path = getwd())
+extract_svals(file, path = getwd(), return_summaries = FALSE)
 }
 \arguments{
 \item{file}{(character) The filename of the Mplus .out file where the starting values are located}
 
 \item{path}{(character) The path where the file is located}
+
+\item{return_summaries}{(logical) If request a list with svals and summary statistics is parsed.}
 }
 \value{
 (character) vector with Model sytax at starting values from the .out file.

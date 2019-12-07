@@ -6,7 +6,7 @@
 \usage{
 EMs_LPA(obsdf, M, z, data_conditions, starts0 = 20, bayes_boot = TRUE,
   boot_2x = FALSE, tempdir_mplus = getwd(), rep = NULL,
-  time_max = 30)
+  itermax = 2, multiplier = 64, cl = NULL)
 }
 \arguments{
 \item{obsdf}{(data.frame) Observed data}
@@ -27,7 +27,11 @@ EMs_LPA(obsdf, M, z, data_conditions, starts0 = 20, bayes_boot = TRUE,
 
 \item{rep}{(integer) Defaults to NULL. Replication number for temprorary directory naming purpose. If one not provided, then a random identifier is constructed.}
 
-\item{time_max}{(integer) Defaults to 30 minutes maximum time of fitting all M models.}
+\item{itermax}{(integer) Defaults to 2. Number of iterations}
+
+\item{multiplier}{(integer) Defaults to 64. Number to multiply starts by at each iteration.}
+
+\item{cl}{Optional SOCKcluster object.}
 }
 \value{
 (mids) An imputed data set of time (mids)

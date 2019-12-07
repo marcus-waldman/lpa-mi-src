@@ -10,22 +10,34 @@
 Mplus2Qlist<-function(params_df){
 
   require(stringr)
+    params_df$param = as.character(params_df$param)
+    params_df$paramHeader = as.character(params_df$paramHeader)
+    params_df$LatentClass = as.character(params_df$LatentClass)
+    if("value" %in% names(params_df)){
+      if ("est" %in% names(params_df)){stop("Both est and value cannot be supplied")}
+      names(params_df)[names(params_df)=="value"] = "est"
+    }
+    if (!("est" %in% names(params_df))){stop("est or value not found but must be supplied")}
 
     K = max(as.numeric(subset(params_df, LatentClass !=  "Categorical.Latent.Variables")$LatentClass))
     J = length(subset(params_df, paramHeader == "Means" & LatentClass == "1")$est)
     Q = list(pi = NULL, mu = NULL, S = NULL)
 
-    names_vec = subset(params_df, paramHeader == "Means" & LatentClass == 1)$param
+    names_vec = subset(params_df, paramHeader == "Means" & LatentClass == "1")$param
 
 
     # Get mixing proportions
-    gamma_vec = subset(params_df, paramHeader == "Means" & LatentClass == "Categorical.Latent.Variables")$est
-    pi_vec = gamma2pi(gamma_vec)
-    Q$pi = pi_vec
+    if(K>1){
+      gamma_vec = subset(params_df, paramHeader == "Means" & startsWith(LatentClass, "Categorical"))$est
+      pi_vec = gamma2pi(gamma_vec)
+      Q$pi = pi_vec
+    } else {
+      Q$pi = 1
+    }
 
 
     # Get means
-    mu_mat = mat.or.vec(nr = J, nc = K)+NA
+    mu_mat = matrix(NA, nrow = J, nc = K)
     for(k in 1:K){
       mu_mat[1:J,k] = subset(params_df, paramHeader == "Means" & LatentClass == as.character(k))$est
     }

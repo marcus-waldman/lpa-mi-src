@@ -4,7 +4,7 @@
 \alias{KLmixmvrnorm}
 \title{Kullback-Leibler divergence between MVN mixtures P & Q (e.g. D_KL(P||Q) )}
 \usage{
-KLmixmvrnorm(P, Q, n = 5e+05)
+KLmixmvrnorm(P, Q, n = 10000)
 }
 \arguments{
 \item{P}{(list) with the following named elements defining the population:

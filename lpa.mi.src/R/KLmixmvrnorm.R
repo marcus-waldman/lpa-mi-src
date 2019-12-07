@@ -13,7 +13,7 @@
 #' @examples
 #' KLmixmvrnorm(P, Q, n = 1E6)
 
-KLmixmvrnorm<-function(P, Q, n = 5E5){
+KLmixmvrnorm<-function(P, Q, n = 1E4){
 
   # Simulate obserations from P for Monte Carlo integratoin
   Y_i = rmixmvrnorm(N = n, pi_vec = P$pi, mu_mat = P$mu, S_array = P$S)

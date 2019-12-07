@@ -1,8 +1,7 @@
 rm(list = ls())
-
-
 remove.packages("lpa.mi.src")
 .rs.restartR()
+
 
 library(roxygen2)
 library(devtools)
@@ -11,10 +10,8 @@ library(devtools)
   #dropbox = "C:/Users/marcu/Dropbox"
 # Big Bertha
   #dropbox="D:/Dropbox/Dropbox"
-# Queen Mary's Revenge
+# Gaby/QMR/Mar-Cobra
   dropbox = "D:/Dropbox"
-# Gaby
-  #dropbox = "D:/Dropbox" 
 # IQSS-RCE NoMachine
   #dropbox = "/nfs/home/M/mwaldman/diss-nomx/Dropbox"
   

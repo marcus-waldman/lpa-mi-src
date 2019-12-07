@@ -22,6 +22,7 @@
 #' @param save_it (logical) if TRUE, then it saves the data set and the following also must be specificed
 #' @param temp_wd_rep_vec (character vector). Required if save_it==TRUE. Replication-specific temporary directory
 #' @param pm_vec (integer) giving the correpsonding the percent missing condition. If NA, then defaults to 1:length(pctmiss_vec)
+#' @param cl_obj Optional. Cluster object to pass to imputation function.
 #' @param ... Additional arguments to the imputation function
 #' @return  out_list - (list) with the following elements
 #'       (A) obj_call - (mids) named mids object for imputed data each
@@ -33,7 +34,7 @@
 #' get_imputed_data(z,list_get_obs, list_get_complete, methods_list, data_conditions, save_it = FALSE)
 
 get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, data_conditions, pctmiss_vec,
-                           rep = NA, save_it = FALSE, temp_wd_rep_vec = NULL, pm_vec = NA, ...){
+                           rep = NA, save_it = FALSE, temp_wd_rep_vec = NULL, pm_vec = NA, cl_obj = NULL, ...){
 
   require(tidyverse)
   require(Amelia)
@@ -136,10 +137,12 @@ get_imputed_data<-function(z, list_get_obs, list_get_complete, methods_list, dat
       }
 
       if (what_tmp=="EMs_LPA"){
-        args_tmp$obsdf = list_get_obs$list_obsdf[[1]]
+        args_tmp$obsdf = list_get_obs$list_obsdf[[ii]]
         args_tmp$z = z
         args_tmp$data_conditions = data_conditions
         args_tmp$rep = rep
+        args_tmp$cl = cl_obj
+        what_tmp = "EMs_LPA_2_completion"
       }
 
       # Run the imputation procedure

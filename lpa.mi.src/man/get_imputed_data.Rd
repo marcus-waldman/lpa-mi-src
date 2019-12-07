@@ -6,7 +6,7 @@
 \usage{
 get_imputed_data(z, list_get_obs, list_get_complete, methods_list,
   data_conditions, pctmiss_vec, rep = NA, save_it = FALSE,
-  temp_wd_rep_vec = NULL, pm_vec = NA, ...)
+  temp_wd_rep_vec = NULL, pm_vec = NA, cl_obj = NULL, ...)
 }
 \arguments{
 \item{z}{(integer) condition identifier for the complete data (as specified by data_conditions)}
@@ -30,6 +30,8 @@ A) dfcom - (data.frame) complete data corresponding to the z-th condition number
 \item{temp_wd_rep_vec}{(character vector). Required if save_it==TRUE. Replication-specific temporary directory}
 
 \item{pm_vec}{(integer) giving the correpsonding the percent missing condition. If NA, then defaults to 1:length(pctmiss_vec)}
+
+\item{cl_obj}{Optional. Cluster object to pass to imputation function.}
 
 \item{...}{Additional arguments to the imputation function}
 

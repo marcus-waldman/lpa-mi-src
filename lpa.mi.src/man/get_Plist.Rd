@@ -4,12 +4,14 @@
 \alias{get_Plist}
 \title{Format population parameters to P list}
 \usage{
-get_Plist(z, data_conditions)
+get_Plist(z, data_conditions, out_FMM = NULL)
 }
 \arguments{
 \item{z}{(integer) condition identifier (number) for the complete data (as specified by data_conditions)}
 
 \item{data_conditions}{(data.frame) simulation conditions pertaining to the complete data}
+
+\item{out_FMM}{(list) Optional. Defaults to NULL. If NULL, then extracted from get_FMM_params}
 }
 \value{
 (list) with pi, mu, and S as arguments defining the mixture model

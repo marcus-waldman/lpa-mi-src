@@ -5,7 +5,7 @@
 \title{Check convergence}
 \usage{
 check_convergence(file, folder_wd = getwd(), starts_txt = "0;",
-  type_imputation = FALSE)
+  type_imputation = FALSE, Rcond_min = 1e-06)
 }
 \arguments{
 \item{file}{(integer)}
